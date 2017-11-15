@@ -1,0 +1,40 @@
+#locations {
+  position: absolute;
+  top: 70px;
+  left: 10px;
+  width: 176px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 30px;
+}
+
+#locations h1 {
+  font-size: 15px;
+  margin: 0;
+}
+
+#locations-list {
+  padding: 0;
+  margin: 0;
+}
+
+#locations-list li {
+  position: relative;
+}
+
+.trash-icon:hover {
+  opacity: 0.5;
+}
+
+.trash-icon {
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  top: 8px;
+  right: 3px;
+  cursor: pointer;
+}
