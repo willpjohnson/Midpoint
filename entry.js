@@ -1,6 +1,6 @@
 import {addAddress, addWill} from './javascripts/add_marker';
 
-const markers = [];
+import {addMidpoint} from './javascripts/add_midpoint';
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -12,6 +12,10 @@ function initMap() {
   document.getElementById('submit').addEventListener('click', function() {
     addAddress(geocoder, map);
   });
+
+  document.getElementById('midpoint-button').addEventListener('click', () => {
+    addMidpoint(map);
+  })
 
   addWill(geocoder, map);
 }

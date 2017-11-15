@@ -11,7 +11,7 @@ const getIndex = (item) => {
   let list = item.parentElement.childNodes;
   let idx;
   for (let i = 0; i < list.length; i++) {
-    if (list[i] === item) idx = i - 1;
+    if (list[i] === item) idx = i;
   }
   return idx;
 }

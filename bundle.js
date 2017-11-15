@@ -70,9 +70,10 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__javascripts_add_marker__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__javascripts_add_midpoint__ = __webpack_require__(3);
 
 
-const markers = [];
+
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -84,6 +85,10 @@ function initMap() {
   document.getElementById('submit').addEventListener('click', function() {
     Object(__WEBPACK_IMPORTED_MODULE_0__javascripts_add_marker__["a" /* addAddress */])(geocoder, map);
   });
+
+  document.getElementById('midpoint-button').addEventListener('click', () => {
+    Object(__WEBPACK_IMPORTED_MODULE_1__javascripts_add_midpoint__["a" /* addMidpoint */])(map);
+  })
 
   Object(__WEBPACK_IMPORTED_MODULE_0__javascripts_add_marker__["b" /* addWill */])(geocoder, map);
 }
@@ -183,12 +188,38 @@ const getIndex = (item) => {
   let list = item.parentElement.childNodes;
   let idx;
   for (let i = 0; i < list.length; i++) {
-    if (list[i] === item) idx = i - 1;
+    if (list[i] === item) idx = i;
   }
   return idx;
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (removeMarker);
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_marker_js__ = __webpack_require__(1);
+
+
+const addMidpoint = (map) => {
+  const lats = [];
+  const longs = [];
+  __WEBPACK_IMPORTED_MODULE_0__add_marker_js__["c" /* markers */].forEach( (marker) => {
+    lats.push(marker.position.lat());
+    longs.push(marker.position.lng());
+  })
+  const avgLat = (lats.reduce((a,b) => a + b, 0)) / lats.length;
+  const avgLong = (longs.reduce((a,b) => a + b, 0)) / longs.length;
+  let midpoint = new google.maps.Marker({
+    map: map,
+    position: {lat: avgLat, lng: avgLong}
+  });
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = addMidpoint;
+
 
 
 /***/ })
