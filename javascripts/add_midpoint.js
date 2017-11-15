@@ -1,4 +1,4 @@
-import {markers} from './add_marker.js';
+import {markers} from '../entry';
 
 export const addMidpoint = (map) => {
   const lats = [];
@@ -11,6 +11,7 @@ export const addMidpoint = (map) => {
   const avgLong = (longs.reduce((a,b) => a + b, 0)) / longs.length;
   let midpoint = new google.maps.Marker({
     map: map,
-    position: {lat: avgLat, lng: avgLong}
+    position: {lat: avgLat, lng: avgLong},
+    icon: 'markers/blue_MarkerM.png'
   });
 }

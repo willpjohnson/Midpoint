@@ -1,6 +1,7 @@
 import {addAddress, addWill} from './javascripts/add_marker';
-
 import {addMidpoint} from './javascripts/add_midpoint';
+
+export const markers = [];
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {

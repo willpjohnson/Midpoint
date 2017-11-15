@@ -74,6 +74,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+const markers = [];
+/* harmony export (immutable) */ __webpack_exports__["markers"] = markers;
+
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -103,11 +106,9 @@ window.initMap = initMap;
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addAddress;
 /* harmony export (immutable) */ __webpack_exports__["b"] = addWill;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__remove_marker__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__entry__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__remove_marker__ = __webpack_require__(2);
 
-
-const markers = [];
-/* harmony export (immutable) */ __webpack_exports__["c"] = markers;
 
 
 function addAddress(geocoder, map) {
@@ -120,7 +121,7 @@ function addAddress(geocoder, map) {
         position: results[0].geometry.location
       });
       addLocationToList(title);
-      markers.push(marker);
+      __WEBPACK_IMPORTED_MODULE_0__entry__["markers"].push(marker);
       clearInput();
       resizeMap(map);
     } else {
@@ -137,7 +138,7 @@ function addWill(geocoder, map) {
         position: results[0].geometry.location
       });
       addLocationToList('Will');
-      markers.push(marker);
+      __WEBPACK_IMPORTED_MODULE_0__entry__["markers"].push(marker);
     } else {
       alert('Midpoint could not add location for the following reason: ' + status);
     }
@@ -149,7 +150,7 @@ const addLocationToList = (title) => {
   let trashIcon = document.createElement("img");
   trashIcon.classList.add("trash-icon");
   trashIcon.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGsSURBVGhD7dq/K0VxGMfxm19FoSQpm4lB2FHKRBJlMtiUxWJAFpuN7Fb/gQmLVVlMFoVsiuRHIT/eT91vPenp3HM7v255PvVa7nPP934/0b3nnnNLKWUGJ3jBTwyfOMcKGlAT2YK12biO0IhCM4pvWBusxhoKzT70hr5wh6sI13iHPu4SheYCekNjiJMOPEAf245M0oZJzEe4h97MAqznWeSvo49dhvU8MYseVJ1W/H2hor1iGLHSjSXswFqsaIeQ/Q0hMiOwFqg164iMF8lZxSKdsN41ak0f/memcVwDNpAo8iFl/Y/m7QCJ4kVS5kVCKhV5gpzFisfyY8EHwky8Qc+foefyFUDPtcyLDCBETsP1TM6LdORDTM+noHMDPde8SIgXgRcxeJEQLwIvYvAiIV4EXsTgRUK8CLyIwYuEeBF4EYMXCalUZBXhCvli+bFAfhCgr6DLZvR8G3r+936klnmRvHiRkDlYC+dtF4kid7Dk0qe1eJ7kfn/i7MFaPC9nqEPiNOMU1otk7Ra9SC1N2ETUW2Sa5Mq9/GCnC5mkHv0Yx0RGBtGCKlIq/QI+C+St9GvhtAAAAABJRU5ErkJggg=="
-  trashIcon.addEventListener("click", (e) => Object(__WEBPACK_IMPORTED_MODULE_0__remove_marker__["a" /* default */])(e.target.parentElement))
+  trashIcon.addEventListener("click", (e) => Object(__WEBPACK_IMPORTED_MODULE_1__remove_marker__["a" /* default */])(e.target.parentElement))
   item.innerHTML = title;
   item.appendChild(trashIcon);
   document.getElementById('locations-list').appendChild(item);
@@ -162,7 +163,7 @@ const clearInput = () => {
 
 const resizeMap = (map) => {
   let bounds = new google.maps.LatLngBounds();
-  markers.forEach( (marker) => {
+  __WEBPACK_IMPORTED_MODULE_0__entry__["markers"].forEach( (marker) => {
     bounds.extend(marker.getPosition())
   })
   map.fitBounds(bounds);
@@ -174,13 +175,13 @@ const resizeMap = (map) => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_marker__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__entry__ = __webpack_require__(0);
 
 
 const removeMarker = (item) => {
   let idx = getIndex(item);
-  __WEBPACK_IMPORTED_MODULE_0__add_marker__["c" /* markers */][idx].setMap(null);
-  __WEBPACK_IMPORTED_MODULE_0__add_marker__["c" /* markers */].splice(idx, 1);
+  __WEBPACK_IMPORTED_MODULE_0__entry__["markers"][idx].setMap(null);
+  __WEBPACK_IMPORTED_MODULE_0__entry__["markers"].splice(idx, 1);
   item.parentElement.removeChild(item);
 }
 
@@ -201,13 +202,13 @@ const getIndex = (item) => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_marker_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__entry__ = __webpack_require__(0);
 
 
 const addMidpoint = (map) => {
   const lats = [];
   const longs = [];
-  __WEBPACK_IMPORTED_MODULE_0__add_marker_js__["c" /* markers */].forEach( (marker) => {
+  __WEBPACK_IMPORTED_MODULE_0__entry__["markers"].forEach( (marker) => {
     lats.push(marker.position.lat());
     longs.push(marker.position.lng());
   })
@@ -215,7 +216,8 @@ const addMidpoint = (map) => {
   const avgLong = (longs.reduce((a,b) => a + b, 0)) / longs.length;
   let midpoint = new google.maps.Marker({
     map: map,
-    position: {lat: avgLat, lng: avgLong}
+    position: {lat: avgLat, lng: avgLong},
+    icon: 'markers/blue_MarkerM.png'
   });
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = addMidpoint;

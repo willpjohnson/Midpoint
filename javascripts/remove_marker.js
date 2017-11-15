@@ -1,4 +1,4 @@
-import { markers } from './add_marker';
+import { markers } from '../entry';
 
 const removeMarker = (item) => {
   let idx = getIndex(item);

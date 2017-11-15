@@ -1,6 +1,5 @@
+import {markers} from '../entry';
 import removeMarker from './remove_marker';
-
-export const markers = [];
 
 export function addAddress(geocoder, map) {
   var address = document.getElementById('address').value + document.getElementById('city').value;
