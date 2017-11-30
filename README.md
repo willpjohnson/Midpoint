@@ -17,3 +17,15 @@ All features in Midpoint are centered around the main map. Users can add several
 The first feature of Midpoint is finding the exact geographical midpoint between several locations. By calculating the latitude and longitude of all entered locations, Midpoint calculates the mathematical average of both and reveals the exact center.
 
 ![image of geographical midpoint](images/geo_midpoint.png)
+
+## Upcoming Features
+
+The following is a collection of features that are yet to be implemented, but will be soon.
+
+### Transit Calculation
+
+This (probably NYC specific) feature will factor in MTA travel time and return the Subway stop that is most quickly reached by all parties involved.
+
+### Location Based Search
+
+Once the user has a central location established by one of the other features, this feature will reveal all nearby establishments (bar, restaurant, etc) that fit the users criteria. Location based search will either be done with Google Maps API or I may decide to implement Yelp's.
