@@ -1,8 +1,10 @@
-/*Green: #013d13
-Yellow: #f4f124
-Yellow2: #e2df1f*/
+/*#93B7BE
+#F1FFFA
+#D5C7BC
+#785964
+#454545*/
 body {
-  background-color: #013d13;
+  background-color: #93B7BE;
   text-align: center;
 }
 
@@ -12,7 +14,7 @@ body {
   margin-left: -250px;;
   position: absolute;
   top: 50px;
-  border: 2px solid #fffb1e;
+  border: 2px solid #F1FFFA;
   border-radius: 3px;
   display: inline-block;
 }

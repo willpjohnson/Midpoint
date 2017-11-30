@@ -1,5 +1,5 @@
 #leftbar {
-  background: linear-gradient(to right, #fffb1e , #d8d515);
+  background-color: #F1FFFA; 
   position: fixed;
   left: 0;
   z-index: 100;
@@ -10,8 +10,7 @@
 }
 
 #rightbar {
-  background: linear-gradient(to right, #d8d515, #fffb1e);
-  position: fixed;
+  background-color: #F1FFFA;   position: fixed;
   right: 0;
   z-index: 100;
   height: 100%;
