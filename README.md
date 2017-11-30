@@ -16,4 +16,4 @@ All features in Midpoint are centered around the main map. Users can add several
 
 The first feature of Midpoint is finding the exact geographical midpoint between several locations. By calculating the latitude and longitude of all entered locations, Midpoint calculates the mathematical average of both and reveals the exact center.
 
-![image of geographical midpoint][images/geo_midpoint.png]
+![image of geographical midpoint](images/geo_midpoint.png)
