@@ -2,7 +2,7 @@
 
 [View Midpoint Live][live]
 
-[live]: willjohnson.tech/Midpoint
+[live]: http://willjohnson.tech/Midpoint
 
 Midpoint is a map tool for calculating convenient meeting locations between friends. It is written in Javascript and implements Google Maps API.
 
