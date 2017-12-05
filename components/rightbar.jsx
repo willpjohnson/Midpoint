@@ -1,4 +1,5 @@
 import React from 'react';
+import BestSubway from './best_subway';
 
 class Rightbar extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class Rightbar extends React.Component {
   render() {
     return(
       <div id="rightbar">
-
+        <BestSubway map={this.props.map} markers={this.props.markers}/>
       </div>
     )
   }
