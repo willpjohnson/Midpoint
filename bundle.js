@@ -18402,6 +18402,8 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _test_locations = __webpack_require__(34);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -18427,6 +18429,7 @@ var AddLocation = function (_React$Component) {
     _this.addAddress = _this.addAddress.bind(_this);
     _this.updateField = _this.updateField.bind(_this);
     _this.getMidpoint = _this.getMidpoint.bind(_this);
+    _this.addThreeTestAddresses = _this.addThreeTestAddresses.bind(_this);
     return _this;
   }
 
@@ -18445,14 +18448,37 @@ var AddLocation = function (_React$Component) {
       var info = { map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title };
       this.geocoder.geocode({ 'address': info.address + " " + info.city }, function (results, status) {
         if (status === 'OK') {
+          var position = results[0].geometry.location;
           var marker = new google.maps.Marker({
             map: info.map,
-            position: results[0].geometry.location
+            position: position
           });
-          info.markers.push({ marker: marker, address: info.address, city: info.city, title: info.title });
+          info.markers.push({ marker: marker, address: info.address, city: info.city, title: info.title, lat: position.lat(), lng: position.lng() });
         } else {
           alert('Midpoint could not add location for the following reason: ' + status);
         }
+      });
+    }
+  }, {
+    key: 'addThreeTestAddresses',
+    value: function addThreeTestAddresses() {
+      var _this3 = this;
+
+      var locations = (0, _test_locations.threeRandomLocations)();
+      var info = { map: this.props.map, markers: this.props.markers };
+      locations.forEach(function (testLocation) {
+        _this3.geocoder.geocode({ 'address': testLocation.address + " " + testLocation.city }, function (results, status) {
+          if (status === 'OK') {
+            var position = results[0].geometry.location;
+            var marker = new google.maps.Marker({
+              map: info.map,
+              position: position
+            });
+            info.markers.push({ marker: marker, address: testLocation.address, city: testLocation.city, title: testLocation.title, lat: position.lat(), lng: position.lng() });
+          } else {
+            alert('Midpoint could not add location for the following reason: ' + status);
+          }
+        });
       });
     }
   }, {
@@ -18497,7 +18523,10 @@ var AddLocation = function (_React$Component) {
         _react2.default.createElement('br', null),
         _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add Location', onClick: this.addAddress }),
         _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint })
+        _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add 3 Random Locations', onClick: this.addThreeTestAddresses })
       );
     }
   }]);
@@ -18528,6 +18557,10 @@ var _best_subway = __webpack_require__(31);
 
 var _best_subway2 = _interopRequireDefault(_best_subway);
 
+var _most_convenient = __webpack_require__(33);
+
+var _most_convenient2 = _interopRequireDefault(_most_convenient);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18551,7 +18584,8 @@ var Rightbar = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'rightbar' },
-        _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers })
+        _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers }),
+        _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers })
       );
     }
   }]);
@@ -18578,6 +18612,8 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _subway_stops = __webpack_require__(32);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18592,18 +18628,46 @@ var BestSubway = function (_React$Component) {
   function BestSubway(props) {
     _classCallCheck(this, BestSubway);
 
-    return _possibleConstructorReturn(this, (BestSubway.__proto__ || Object.getPrototypeOf(BestSubway)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (BestSubway.__proto__ || Object.getPrototypeOf(BestSubway)).call(this, props));
+
+    _this.calculateBestSubway = _this.calculateBestSubway.bind(_this);
+    return _this;
   }
 
   _createClass(BestSubway, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      console.log(this.props);
+    key: 'calculateBestSubway',
+    value: function calculateBestSubway() {
+      // const directionsDisplay = new google.maps.DirectionsRenderer;
+      // const directionsService = new google.maps.DirectionsService;
+      // directionsDisplay.setMap(this.props.map);
+      //
+      // brooklyn.forEach( (stop) => {
+      //   let transitTimes = [];
+      //   this.props.markers.forEach( (marker) => {
+      //     directionsService.route({
+      //       origin: {lat: marker.lat, lng: marker.lng},
+      //       destination: {lat: stop.lat, lng: stop.lng},
+      //       travelMode: 'TRANSIT'
+      //     }, function(response, status) {
+      //       if (status === 'OK') {
+      //         let bestRoute = response.routes[0].legs[0];
+      //         let timeValue = bestRoute.duration.value;
+      //         console.log(stop.name);
+      //         console.log(marker.title);
+      //         console.log(timeValue);
+      //         transitTimes.push({origin: marker.title, destination: stop.name, timeValue: timeValue})
+      //       } else {
+      //         // window.alert('Directions request failed due to ' + status);
+      //       }
+      //     })
+      //   })
+      //   console.log(transitTimes);
+      // })
     }
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('div', null);
+      return _react2.default.createElement('div', { onClick: this.calculateBestSubway });
     }
   }]);
 
@@ -18611,6 +18675,136 @@ var BestSubway = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = BestSubway;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var brooklyn = exports.brooklyn = [{ lat: 40.7081258, lng: -73.9407309, name: "Bedford" }, { lat: 40.7081258, lng: -73.9407309, name: "Lorimer" }, { lat: 40.7081258, lng: -73.9407309, name: "Graham" }, { lat: 40.7105047, lng: -73.9394737, name: "Grand" }, { lat: 40.7105047, lng: -73.9394737, name: "Montrose" }, { lat: 40.7059709, lng: -73.9363043, name: "Morgan" }, { lat: 40.7059709, lng: -73.9363043, name: "Jefferson" }, { lat: 40.7059709, lng: -73.9363043, name: "Dekalb" }, { lat: 40.7059709, lng: -73.9363043, name: "Myrtle Wyckoff" }];
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MostConvenient = function (_React$Component) {
+  _inherits(MostConvenient, _React$Component);
+
+  function MostConvenient(props) {
+    _classCallCheck(this, MostConvenient);
+
+    var _this = _possibleConstructorReturn(this, (MostConvenient.__proto__ || Object.getPrototypeOf(MostConvenient)).call(this, props));
+
+    _this.getMostConvenient = _this.getMostConvenient.bind(_this);
+    _this.assessAllTrips = _this.assessAllTrips.bind(_this);
+    return _this;
+  }
+
+  _createClass(MostConvenient, [{
+    key: 'getMostConvenient',
+    value: function getMostConvenient() {
+      var allTrips = this.assessAllTrips();
+    }
+  }, {
+    key: 'assessAllTrips',
+    value: function assessAllTrips() {
+      var directionsService = new google.maps.DirectionsService();
+      var travelTimesArray = [];
+      var markers = this.props.markers;
+
+      var _loop = function _loop(i) {
+        var trips = [];
+
+        var _loop2 = function _loop2(j) {
+          if (i === j) return 'continue';
+          directionsService.route({
+            origin: { lat: markers[j].lat, lng: markers[j].lng },
+            destination: { lat: markers[i].lat, lng: markers[i].lng },
+            travelMode: 'TRANSIT'
+          }, function (response, status) {
+            if (status === "OK") {
+              var route = response.routes[0].legs[0];
+              trips.push({ origin: markers[j].title, destination: markers[i].title, timeValue: route.duration.value, steps: route.steps });
+            } else {
+              window.alert('Directions request failed due to ' + status);
+            }
+          });
+        };
+
+        for (var j = 0; j < markers.length; j++) {
+          var _ret2 = _loop2(j);
+
+          if (_ret2 === 'continue') continue;
+        }
+        travelTimesArray.push({ destination: markers[i].title, trips: trips });
+      };
+
+      for (var i = 0; i < markers.length; i++) {
+        _loop(i);
+      }
+
+      return travelTimesArray;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('div', { onClick: this.getMostConvenient });
+    }
+  }]);
+
+  return MostConvenient;
+}(_react2.default.Component);
+
+exports.default = MostConvenient;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
+
+var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
+  var size = testLocations.length;
+  var idxCollection = [];
+  while (idxCollection.length < 3) {
+    var idx = Math.floor(Math.random() * size);
+    if (!idxCollection.includes(idx)) idxCollection.push(idx);
+  }
+
+  return [testLocations[idxCollection[0]], testLocations[idxCollection[1]], testLocations[idxCollection[2]]];
+};
 
 /***/ })
 /******/ ]);

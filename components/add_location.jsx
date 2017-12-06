@@ -1,4 +1,5 @@
 import React from 'react';
+import { threeRandomLocations } from '../javascripts/test_locations';
 
 class AddLocation extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class AddLocation extends React.Component {
     this.addAddress = this.addAddress.bind(this);
     this.updateField = this.updateField.bind(this);
     this.getMidpoint = this.getMidpoint.bind(this);
+    this.addThreeTestAddresses = this.addThreeTestAddresses.bind(this);
   }
 
   updateField(field) {
@@ -22,15 +24,35 @@ class AddLocation extends React.Component {
     const info = {map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title};
     this.geocoder.geocode({'address': info.address + " " + info.city}, function(results, status) {
       if (status === 'OK') {
+        let position = results[0].geometry.location;
         let marker = new google.maps.Marker({
           map: info.map,
-          position: results[0].geometry.location
+          position: position
         });
-        info.markers.push({marker, address: info.address, city: info.city, title: info.title});
+        info.markers.push({marker, address: info.address, city: info.city, title: info.title, lat: position.lat(), lng: position.lng()});
       } else {
         alert('Midpoint could not add location for the following reason: ' + status);
       }
     });
+  }
+
+  addThreeTestAddresses() {
+    const locations = threeRandomLocations();
+    const info = {map: this.props.map, markers: this.props.markers};
+    locations.forEach( (testLocation) => {
+      this.geocoder.geocode({'address': testLocation.address + " " + testLocation.city}, function(results, status) {
+        if (status === 'OK') {
+          let position = results[0].geometry.location;
+          let marker = new google.maps.Marker({
+            map: info.map,
+            position: position
+          });
+          info.markers.push({marker, address: testLocation.address, city: testLocation.city, title: testLocation.title, lat: position.lat(), lng: position.lng()});
+        } else {
+          alert('Midpoint could not add location for the following reason: ' + status);
+        }
+      })
+    })
   }
 
   getMidpoint() {
@@ -59,7 +81,8 @@ class AddLocation extends React.Component {
         <input onChange={this.updateField("city")} className="add-location-input" id="city" type="textbox" value={this.state.city} placeholder="City"></input><br />
         <input onChange={this.updateField("title")} className="add-location-input" id="title" type="textbox" value={this.state.title} placeholder="Location Name"></input><br />
         <input className="button" id="submit" type="button" value="Add Location" onClick={this.addAddress}></input><br />
-        <input className="button" id="midpoint" type="button" value="Get Midpoint" onClick={this.getMidpoint}></input>
+        <input className="button" id="midpoint" type="button" value="Get Midpoint" onClick={this.getMidpoint}></input><br /><br />
+        <input className="button" id="submit" type="button" value="Add 3 Random Locations" onClick={this.addThreeTestAddresses}></input>
       </div>
     )
   }
