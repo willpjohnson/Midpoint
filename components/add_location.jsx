@@ -21,6 +21,7 @@ class AddLocation extends React.Component {
   }
 
   addAddress() {
+    const addInfoWindow = this.addInfoWindow;
     const info = {map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title};
     this.geocoder.geocode({'address': info.address + " " + info.city}, function(results, status) {
       if (status === 'OK') {
@@ -29,6 +30,7 @@ class AddLocation extends React.Component {
           map: info.map,
           position: position
         });
+        addInfoWindow(marker, map, info.title, info.address);
         info.markers.push({marker, address: info.address, city: info.city, title: info.title, lat: position.lat(), lng: position.lng()});
       } else {
         alert('Midpoint could not add location for the following reason: ' + status);
@@ -38,6 +40,7 @@ class AddLocation extends React.Component {
 
   addThreeTestAddresses() {
     const locations = threeRandomLocations();
+    const addInfoWindow = this.addInfoWindow;
     const info = {map: this.props.map, markers: this.props.markers};
     locations.forEach( (testLocation) => {
       this.geocoder.geocode({'address': testLocation.address + " " + testLocation.city}, function(results, status) {
@@ -47,12 +50,21 @@ class AddLocation extends React.Component {
             map: info.map,
             position: position
           });
+          addInfoWindow(marker, map, testLocation.title, testLocation.address);
           info.markers.push({marker, address: testLocation.address, city: testLocation.city, title: testLocation.title, lat: position.lat(), lng: position.lng()});
         } else {
           alert('Midpoint could not add location for the following reason: ' + status);
         }
       })
     })
+  }
+
+  addInfoWindow(marker, map, title, address) {
+    let infoWindow = new google.maps.InfoWindow({
+      content: '<h1 class="marker-headline">' + title + '</h1><h2 class="marker-info">' + address + '</h2>'
+    })
+    marker.addListener('mouseover', () => infoWindow.open(map, marker));
+    marker.addListener('mouseout', () => infoWindow.close(map, marker));
   }
 
   getMidpoint() {

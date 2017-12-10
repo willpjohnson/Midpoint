@@ -18445,6 +18445,7 @@ var AddLocation = function (_React$Component) {
   }, {
     key: 'addAddress',
     value: function addAddress() {
+      var addInfoWindow = this.addInfoWindow;
       var info = { map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title };
       this.geocoder.geocode({ 'address': info.address + " " + info.city }, function (results, status) {
         if (status === 'OK') {
@@ -18453,6 +18454,7 @@ var AddLocation = function (_React$Component) {
             map: info.map,
             position: position
           });
+          addInfoWindow(marker, map, info.title, info.address);
           info.markers.push({ marker: marker, address: info.address, city: info.city, title: info.title, lat: position.lat(), lng: position.lng() });
         } else {
           alert('Midpoint could not add location for the following reason: ' + status);
@@ -18465,6 +18467,7 @@ var AddLocation = function (_React$Component) {
       var _this3 = this;
 
       var locations = (0, _test_locations.threeRandomLocations)();
+      var addInfoWindow = this.addInfoWindow;
       var info = { map: this.props.map, markers: this.props.markers };
       locations.forEach(function (testLocation) {
         _this3.geocoder.geocode({ 'address': testLocation.address + " " + testLocation.city }, function (results, status) {
@@ -18474,11 +18477,25 @@ var AddLocation = function (_React$Component) {
               map: info.map,
               position: position
             });
+            addInfoWindow(marker, map, testLocation.title, testLocation.address);
             info.markers.push({ marker: marker, address: testLocation.address, city: testLocation.city, title: testLocation.title, lat: position.lat(), lng: position.lng() });
           } else {
             alert('Midpoint could not add location for the following reason: ' + status);
           }
         });
+      });
+    }
+  }, {
+    key: 'addInfoWindow',
+    value: function addInfoWindow(marker, map, title, address) {
+      var infoWindow = new google.maps.InfoWindow({
+        content: '<h1 class="marker-headline">' + title + '</h1><h2 class="marker-info">' + address + '</h2>'
+      });
+      marker.addListener('mouseover', function () {
+        return infoWindow.open(map, marker);
+      });
+      marker.addListener('mouseout', function () {
+        return infoWindow.close(map, marker);
       });
     }
   }, {
