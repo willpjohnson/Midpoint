@@ -6,6 +6,9 @@ class MostConvenient extends React.Component {
 
     this.getMostConvenient = this.getMostConvenient.bind(this);
     this.assessAllTrips = this.assessAllTrips.bind(this);
+    this.routeLocation = this.routeLocation.bind(this);
+
+    this.allRoutes = [];
   }
 
   timeConversion(value) {
@@ -15,41 +18,53 @@ class MostConvenient extends React.Component {
   }
 
   getMostConvenient() {
-    const assessAllTrips = this.assessAllTrips;
     const directionsService = new google.maps.DirectionsService;
-    const travelTimesArray = [];
     let markers = this.props.markers;
-    let destinationCounter = markers.length;
+    const size = markers.length * (markers.length - 1);
     for (let i = 0; i < markers.length; i++) {
-      let trips = [];
-      let originCounter = markers.length - 1;
       for (let j = 0; j < markers.length; j++) {
         if (i === j) continue;
-        directionsService.route({
-          origin: {lat: markers[j].lat, lng: markers[j].lng},
-          destination: {lat: markers[i].lat, lng: markers[i].lng},
-          travelMode: 'TRANSIT'
-        }, function(response, status) {
-          if (status === "OK") {
-            let route = response.routes[0].legs[0];
-            trips.push({origin: markers[j].title, destination: markers[i].title, timeText: route.duration.text, timeValue: route.duration.value, steps: route.steps});
-            originCounter -= 1;
-            if (originCounter === 0) {
-              destinationCounter -= 1;
-              travelTimesArray.push({destination: markers[i].title, trips: trips});
-            }
-            if (destinationCounter === 0) {
-              assessAllTrips(travelTimesArray);
-            }
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        })
+        this.routeLocation(directionsService, markers[j], markers[i], size)
       }
     }
   }
 
-  assessAllTrips(allTrips) {
+  routeLocation(directionsService, origin, destination, size) {
+    const routeLocation = this.routeLocation;
+    const assessAllTrips = this.assessAllTrips;
+    const allRoutes = this.allRoutes;
+    directionsService.route({
+      origin: {lat: origin.lat, lng: origin.lng},
+      destination: {lat: destination.lat, lng: destination.lng},
+      travelMode: 'TRANSIT'
+    }, function(response, status) {
+      if (status === "OK") {
+        let route = response.routes[0].legs[0];
+        allRoutes.push({origin: origin.title, destination: destination.title, timeValue: route.duration.value, steps: route.steps});
+        if (allRoutes.length === size) assessAllTrips(allRoutes);
+      } else if (status === "OVER_QUERY_LIMIT") {
+        setTimeout( () => {
+          routeLocation(directionsService, origin, destination, size)
+        }, 200)
+      }
+    })
+  }
+
+  assessAllTrips(allRoutes) {
+    const allTrips = [];
+    allRoutes.forEach( (route) => {
+      let notIncluded = true;
+      allTrips.forEach( (trip) => {
+        if (trip.destination === route.destination) {
+          notIncluded = false;
+          trip.trips.push(route);
+        }
+      });
+      if (notIncluded) {
+        allTrips.push({destination: route.destination, trips: [route]});
+      }
+    });
+
     const totalTimes = [];
     allTrips.forEach( (tripCollection) => {
       let trips = tripCollection.trips;

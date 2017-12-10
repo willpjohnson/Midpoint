@@ -65,6 +65,21 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(15);
+} else {
+  module.exports = __webpack_require__(16);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -254,21 +269,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(15);
-} else {
-  module.exports = __webpack_require__(16);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -429,7 +429,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 5 */
@@ -489,7 +489,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 6 */
@@ -558,7 +558,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 7 */
@@ -625,7 +625,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 8 */
@@ -745,7 +745,7 @@ var EventListener = {
 };
 
 module.exports = EventListener;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 10 */
@@ -940,7 +940,7 @@ module.exports = focusNode;
 "use strict";
 
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -2337,7 +2337,7 @@ module.exports = react;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 17 */
@@ -2402,7 +2402,7 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = __webpack_require__(22);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 19 */
@@ -2420,7 +2420,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1),m=__webpack_require__(8),A=__webpack_require__(3),B=__webpack_require__(2),ca=__webpack_require__(9),da=__webpack_require__(10),ea=__webpack_require__(11),ha=__webpack_require__(12),ia=__webpack_require__(13),C=__webpack_require__(4);
+var aa=__webpack_require__(0),m=__webpack_require__(8),A=__webpack_require__(3),B=__webpack_require__(2),ca=__webpack_require__(9),da=__webpack_require__(10),ea=__webpack_require__(11),ha=__webpack_require__(12),ia=__webpack_require__(13),C=__webpack_require__(4);
 function D(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:D("227");
 var la={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function qa(a,b){return(a&b)===b}
 var ra={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ra,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){sa.hasOwnProperty(f)?D("48",f):void 0;var g=f.toLowerCase(),k=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:qa(k,b.MUST_USE_PROPERTY),
@@ -2714,7 +2714,7 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var React = __webpack_require__(1);
+var React = __webpack_require__(0);
 var invariant = __webpack_require__(5);
 var warning = __webpack_require__(6);
 var ExecutionEnvironment = __webpack_require__(8);
@@ -18100,7 +18100,7 @@ module.exports = reactDom;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 23 */
@@ -18271,7 +18271,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -18279,7 +18279,7 @@ var _leftbar = __webpack_require__(28);
 
 var _leftbar2 = _interopRequireDefault(_leftbar);
 
-var _rightbar = __webpack_require__(30);
+var _rightbar = __webpack_require__(31);
 
 var _rightbar2 = _interopRequireDefault(_rightbar);
 
@@ -18344,7 +18344,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -18398,11 +18398,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _test_locations = __webpack_require__(34);
+var _test_locations = __webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18546,18 +18546,48 @@ exports.default = AddLocation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
+
+// const testLocations = [
+//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
+//   {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
+//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
+//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
+// ]
+
+var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
+  var size = testLocations.length;
+  var idxCollection = [];
+  while (idxCollection.length < 3) {
+    var idx = Math.floor(Math.random() * size);
+    if (!idxCollection.includes(idx)) idxCollection.push(idx);
+  }
+
+  return [testLocations[idxCollection[0]], testLocations[idxCollection[1]], testLocations[idxCollection[2]]];
+};
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _best_subway = __webpack_require__(31);
+var _best_subway = __webpack_require__(32);
 
 var _best_subway2 = _interopRequireDefault(_best_subway);
 
-var _most_convenient = __webpack_require__(33);
+var _most_convenient = __webpack_require__(34);
 
 var _most_convenient2 = _interopRequireDefault(_most_convenient);
 
@@ -18596,7 +18626,7 @@ var Rightbar = function (_React$Component) {
 exports.default = Rightbar;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18608,11 +18638,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _subway_stops = __webpack_require__(32);
+var _subway_stops = __webpack_require__(33);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18677,7 +18707,7 @@ var BestSubway = function (_React$Component) {
 exports.default = BestSubway;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18689,7 +18719,7 @@ Object.defineProperty(exports, "__esModule", {
 var brooklyn = exports.brooklyn = [{ lat: 40.7081258, lng: -73.9407309, name: "Bedford" }, { lat: 40.7081258, lng: -73.9407309, name: "Lorimer" }, { lat: 40.7081258, lng: -73.9407309, name: "Graham" }, { lat: 40.7105047, lng: -73.9394737, name: "Grand" }, { lat: 40.7105047, lng: -73.9394737, name: "Montrose" }, { lat: 40.7059709, lng: -73.9363043, name: "Morgan" }, { lat: 40.7059709, lng: -73.9363043, name: "Jefferson" }, { lat: 40.7059709, lng: -73.9363043, name: "Dekalb" }, { lat: 40.7059709, lng: -73.9363043, name: "Myrtle Wyckoff" }];
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18701,7 +18731,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -18723,6 +18753,9 @@ var MostConvenient = function (_React$Component) {
 
     _this.getMostConvenient = _this.getMostConvenient.bind(_this);
     _this.assessAllTrips = _this.assessAllTrips.bind(_this);
+    _this.routeLocation = _this.routeLocation.bind(_this);
+
+    _this.allRoutes = [];
     return _this;
   }
 
@@ -18736,55 +18769,56 @@ var MostConvenient = function (_React$Component) {
   }, {
     key: 'getMostConvenient',
     value: function getMostConvenient() {
-      var assessAllTrips = this.assessAllTrips;
       var directionsService = new google.maps.DirectionsService();
-      var travelTimesArray = [];
       var markers = this.props.markers;
-      var destinationCounter = markers.length;
-
-      var _loop = function _loop(i) {
-        var trips = [];
-        var originCounter = markers.length - 1;
-
-        var _loop2 = function _loop2(j) {
-          if (i === j) return 'continue';
-          directionsService.route({
-            origin: { lat: markers[j].lat, lng: markers[j].lng },
-            destination: { lat: markers[i].lat, lng: markers[i].lng },
-            travelMode: 'TRANSIT'
-          }, function (response, status) {
-            if (status === "OK") {
-              var route = response.routes[0].legs[0];
-              trips.push({ origin: markers[j].title, destination: markers[i].title, timeText: route.duration.text, timeValue: route.duration.value, steps: route.steps });
-              originCounter -= 1;
-              if (originCounter === 0) {
-                destinationCounter -= 1;
-                travelTimesArray.push({ destination: markers[i].title, trips: trips });
-              }
-              if (destinationCounter === 0) {
-                assessAllTrips(travelTimesArray);
-              }
-            } else {
-              window.alert('Directions request failed due to ' + status);
-            }
-          });
-        };
-
-        for (var j = 0; j < markers.length; j++) {
-          var _ret2 = _loop2(j);
-
-          if (_ret2 === 'continue') continue;
-        }
-      };
-
+      var size = markers.length * (markers.length - 1);
       for (var i = 0; i < markers.length; i++) {
-        _loop(i);
+        for (var j = 0; j < markers.length; j++) {
+          if (i === j) continue;
+          this.routeLocation(directionsService, markers[j], markers[i], size);
+        }
       }
     }
   }, {
+    key: 'routeLocation',
+    value: function routeLocation(directionsService, origin, destination, size) {
+      var routeLocation = this.routeLocation;
+      var assessAllTrips = this.assessAllTrips;
+      var allRoutes = this.allRoutes;
+      directionsService.route({
+        origin: { lat: origin.lat, lng: origin.lng },
+        destination: { lat: destination.lat, lng: destination.lng },
+        travelMode: 'TRANSIT'
+      }, function (response, status) {
+        if (status === "OK") {
+          var route = response.routes[0].legs[0];
+          allRoutes.push({ origin: origin.title, destination: destination.title, timeValue: route.duration.value, steps: route.steps });
+          if (allRoutes.length === size) assessAllTrips(allRoutes);
+        } else if (status === "OVER_QUERY_LIMIT") {
+          setTimeout(function () {
+            routeLocation(directionsService, origin, destination, size);
+          }, 200);
+        }
+      });
+    }
+  }, {
     key: 'assessAllTrips',
-    value: function assessAllTrips(allTrips) {
+    value: function assessAllTrips(allRoutes) {
       var _this2 = this;
+
+      var allTrips = [];
+      allRoutes.forEach(function (route) {
+        var notIncluded = true;
+        allTrips.forEach(function (trip) {
+          if (trip.destination === route.destination) {
+            notIncluded = false;
+            trip.trips.push(route);
+          }
+        });
+        if (notIncluded) {
+          allTrips.push({ destination: route.destination, trips: [route] });
+        }
+      });
 
       var totalTimes = [];
       allTrips.forEach(function (tripCollection) {
@@ -18833,38 +18867,6 @@ var MostConvenient = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = MostConvenient;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// const testLocations = [
-//   {address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza"},
-//   {address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza"},
-//   {address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's"},
-//   {address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza"},
-//   {address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza"},
-//   {address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village"}
-// ]
-
-var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn, NY", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
-
-var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
-  var size = testLocations.length;
-  var idxCollection = [];
-  while (idxCollection.length < 3) {
-    var idx = Math.floor(Math.random() * size);
-    if (!idxCollection.includes(idx)) idxCollection.push(idx);
-  }
-
-  return [testLocations[idxCollection[0]], testLocations[idxCollection[1]], testLocations[idxCollection[2]]];
-};
 
 /***/ })
 /******/ ]);
