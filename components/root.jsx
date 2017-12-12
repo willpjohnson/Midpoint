@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { mapStyle } from '../javascripts/map_style';
 import Leftbar from './leftbar';
 import Rightbar from './rightbar';
 
@@ -12,10 +13,7 @@ class Root extends React.Component {
   }
 
   componentDidMount() {
-    this.map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
-      center: {lat: 40.6959498, lng: -73.963771}
-    });
+    this.map = new google.maps.Map(document.getElementById('map'), mapStyle);
     this.forceUpdate()
   }
 
@@ -31,3 +29,6 @@ class Root extends React.Component {
 }
 
 export default Root;
+
+// zoom: 12,
+// center: {lat: 40.6959498, lng: -73.963771},

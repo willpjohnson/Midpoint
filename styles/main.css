@@ -4,16 +4,16 @@
 #785964
 #454545*/
 body {
-  background-color: #93B7BE;
+  background-color: #262e35;
   text-align: center;
 }
 
 #map {
-  height: 500px;
-  width: 500px;
-  margin-left: -250px;;
+  height: 90%;
+  width: 54%;
+  margin-left: -27%;
   position: absolute;
-  top: 50px;
+  top: 5%;
   border: 2px solid #F1FFFA;
   border-radius: 3px;
   display: inline-block;
