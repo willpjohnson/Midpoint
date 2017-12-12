@@ -18775,6 +18775,11 @@ var MostConvenient = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (MostConvenient.__proto__ || Object.getPrototypeOf(MostConvenient)).call(this, props));
 
+    _this.state = {
+      tripSummaries: [],
+      totalTimes: []
+    };
+
     _this.getMostConvenient = _this.getMostConvenient.bind(_this);
     _this.assessAllTrips = _this.assessAllTrips.bind(_this);
     _this.routeLocation = _this.routeLocation.bind(_this);
@@ -18828,24 +18833,22 @@ var MostConvenient = function (_React$Component) {
   }, {
     key: 'assessAllTrips',
     value: function assessAllTrips(allRoutes) {
-      var _this2 = this;
-
-      var allTrips = [];
+      var tripSummaries = [];
       allRoutes.forEach(function (route) {
         var notIncluded = true;
-        allTrips.forEach(function (trip) {
+        tripSummaries.forEach(function (trip) {
           if (trip.destination === route.destination) {
             notIncluded = false;
             trip.trips.push(route);
           }
         });
         if (notIncluded) {
-          allTrips.push({ destination: route.destination, trips: [route] });
+          tripSummaries.push({ destination: route.destination, trips: [route] });
         }
       });
 
       var totalTimes = [];
-      allTrips.forEach(function (tripCollection) {
+      tripSummaries.forEach(function (tripCollection) {
         var trips = tripCollection.trips;
         var totalTime = 0;
         trips.forEach(function (trip) {
@@ -18857,22 +18860,30 @@ var MostConvenient = function (_React$Component) {
       totalTimes.sort(function (a, b) {
         return a.totalTime - b.totalTime;
       });
-      var closest = "";
-      var time = null;
-      var div = document.getElementById("most-convenient-directions");
-      totalTimes.forEach(function (destination) {
-        var title = document.createElement("h3");
-        var time = document.createElement("h4");
-        title.innerHTML = destination.destination;
-        time.innerHTML = _this2.timeConversion(destination.totalTime);
-        div.appendChild(title);
-        div.appendChild(time);
-      });
-      return totalTimes;
+
+      this.setState({ tripSummaries: tripSummaries, totalTimes: totalTimes });
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
+      var totalTimesLis = this.state.totalTimes.map(function (totalTime, idx) {
+        return _react2.default.createElement(
+          'li',
+          { key: idx },
+          _react2.default.createElement(
+            'h3',
+            null,
+            totalTime.destination
+          ),
+          _react2.default.createElement(
+            'h4',
+            null,
+            _this2.timeConversion(totalTime.totalTime)
+          )
+        );
+      });
       return _react2.default.createElement(
         'div',
         { id: 'most-convenient-div' },
@@ -18882,7 +18893,15 @@ var MostConvenient = function (_React$Component) {
           'Most Convenient'
         ),
         _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.getMostConvenient }),
-        _react2.default.createElement('div', { id: 'most-convenient-directions' })
+        _react2.default.createElement(
+          'div',
+          { id: 'most-convenient-directions' },
+          _react2.default.createElement(
+            'ul',
+            null,
+            totalTimesLis
+          )
+        )
       );
     }
   }]);

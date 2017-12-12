@@ -4,6 +4,11 @@ class MostConvenient extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      tripSummaries: [],
+      totalTimes: []
+    };
+
     this.getMostConvenient = this.getMostConvenient.bind(this);
     this.assessAllTrips = this.assessAllTrips.bind(this);
     this.routeLocation = this.routeLocation.bind(this);
@@ -51,22 +56,22 @@ class MostConvenient extends React.Component {
   }
 
   assessAllTrips(allRoutes) {
-    const allTrips = [];
+    const tripSummaries = [];
     allRoutes.forEach( (route) => {
       let notIncluded = true;
-      allTrips.forEach( (trip) => {
+      tripSummaries.forEach( (trip) => {
         if (trip.destination === route.destination) {
           notIncluded = false;
           trip.trips.push(route);
         }
       });
       if (notIncluded) {
-        allTrips.push({destination: route.destination, trips: [route]});
+        tripSummaries.push({destination: route.destination, trips: [route]});
       }
     });
 
     const totalTimes = [];
-    allTrips.forEach( (tripCollection) => {
+    tripSummaries.forEach( (tripCollection) => {
       let trips = tripCollection.trips;
       let totalTime = 0;
       trips.forEach( (trip) => {
@@ -78,26 +83,28 @@ class MostConvenient extends React.Component {
     totalTimes.sort( (a, b) => {
       return a.totalTime - b.totalTime;
     })
-    let closest = "";
-    let time = null;
-    let div = document.getElementById("most-convenient-directions");
-    totalTimes.forEach( (destination) => {
-      let title = document.createElement("h3");
-      let time = document.createElement("h4");
-      title.innerHTML = destination.destination;
-      time.innerHTML = this.timeConversion(destination.totalTime);
-      div.appendChild(title);
-      div.appendChild(time);
-    })
-    return totalTimes;
+
+    this.setState({tripSummaries, totalTimes});
   }
 
   render() {
+    const totalTimesLis = this.state.totalTimes.map( (totalTime, idx) => {
+      return(
+        <li key={idx}>
+          <h3>{totalTime.destination}</h3>
+          <h4>{this.timeConversion(totalTime.totalTime)}</h4>
+        </li>
+      )
+    })
     return(
       <div id="most-convenient-div">
         <h2 style={{fontWeight: 400, fontSize: 20}}>Most Convenient</h2>
         <input className="button" id="submit" type="button" value="Find" onClick={this.getMostConvenient}></input>
-        <div id="most-convenient-directions"></div>
+        <div id="most-convenient-directions">
+          <ul>
+            {totalTimesLis}
+          </ul>
+        </div>
       </div>
     )
   }
