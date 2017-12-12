@@ -12,6 +12,7 @@ class AddLocation extends React.Component {
     this.updateField = this.updateField.bind(this);
     this.getMidpoint = this.getMidpoint.bind(this);
     this.addThreeTestAddresses = this.addThreeTestAddresses.bind(this);
+    this.createMarker = this.createMarker.bind(this);
   }
 
   updateField(field) {
@@ -21,17 +22,12 @@ class AddLocation extends React.Component {
   }
 
   addAddress() {
-    const addInfoWindow = this.addInfoWindow;
+    const createMarker = this.createMarker;
     const info = {map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title};
     this.geocoder.geocode({'address': info.address + " " + info.city}, function(results, status) {
       if (status === 'OK') {
         let position = results[0].geometry.location;
-        let marker = new google.maps.Marker({
-          map: info.map,
-          position: position
-        });
-        addInfoWindow(marker, map, info.title, info.address);
-        info.markers.push({marker, address: info.address, city: info.city, title: info.title, lat: position.lat(), lng: position.lng()});
+        createMarker(position, info.map, info.title, info.address, info.city);
       } else {
         alert('Midpoint could not add location for the following reason: ' + status);
       }
@@ -40,18 +36,13 @@ class AddLocation extends React.Component {
 
   addThreeTestAddresses() {
     const locations = threeRandomLocations();
-    const addInfoWindow = this.addInfoWindow;
+    const createMarker = this.createMarker;
     const info = {map: this.props.map, markers: this.props.markers};
     locations.forEach( (testLocation) => {
       this.geocoder.geocode({'address': testLocation.address + " " + testLocation.city}, function(results, status) {
         if (status === 'OK') {
           let position = results[0].geometry.location;
-          let marker = new google.maps.Marker({
-            map: info.map,
-            position: position
-          });
-          addInfoWindow(marker, map, testLocation.title, testLocation.address);
-          info.markers.push({marker, address: testLocation.address, city: testLocation.city, title: testLocation.title, lat: position.lat(), lng: position.lng()});
+          createMarker(position, info.map, testLocation.title, testLocation.address, testLocation.city);
         } else {
           alert('Midpoint could not add location for the following reason: ' + status);
         }
@@ -59,12 +50,27 @@ class AddLocation extends React.Component {
     })
   }
 
-  addInfoWindow(marker, map, title, address) {
+  createMarker(position, map, title, address, city) {
+    const markers = this.props.markers;
+    const deletedMarkers = this.props.deletedMarkers;
+    let marker = new google.maps.Marker({map, position});
+    const id = markers.length + deletedMarkers.length;
+    marker.metadata = {id}
+    markers.push({marker, address, city, title, lat: position.lat(), lng: position.lng()});
     let infoWindow = new google.maps.InfoWindow({
       content: '<h1 class="marker-headline">' + title + '</h1><h2 class="marker-info">' + address + '</h2>'
     })
     marker.addListener('mouseover', () => infoWindow.open(map, marker));
     marker.addListener('mouseout', () => infoWindow.close(map, marker));
+    marker.addListener('click', () => {
+      markers.forEach( (listedMarker, idx) => {
+        if (listedMarker.marker.metadata.id === marker.metadata.id) {
+          deletedMarkers.push(listedMarker);
+          markers.splice(idx, 1);
+          marker.setMap(null);
+        }
+      });
+    })
   }
 
   getMidpoint() {

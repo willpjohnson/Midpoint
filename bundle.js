@@ -18301,6 +18301,7 @@ var Root = function (_React$Component) {
 
     _this.map = null;
     _this.markers = [];
+    _this.deletedMarkers = [];
     return _this;
   }
 
@@ -18319,7 +18320,7 @@ var Root = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_leftbar2.default, { map: this.map, markers: this.markers }),
+        _react2.default.createElement(_leftbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers }),
         _react2.default.createElement(_rightbar2.default, { map: this.map, markers: this.markers }),
         _react2.default.createElement('div', { id: 'map' })
       );
@@ -18375,7 +18376,7 @@ var Leftbar = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'leftbar' },
-        _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers })
+        _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers, deletedMarkers: this.props.deletedMarkers })
       );
     }
   }]);
@@ -18430,6 +18431,7 @@ var AddLocation = function (_React$Component) {
     _this.updateField = _this.updateField.bind(_this);
     _this.getMidpoint = _this.getMidpoint.bind(_this);
     _this.addThreeTestAddresses = _this.addThreeTestAddresses.bind(_this);
+    _this.createMarker = _this.createMarker.bind(_this);
     return _this;
   }
 
@@ -18445,17 +18447,12 @@ var AddLocation = function (_React$Component) {
   }, {
     key: 'addAddress',
     value: function addAddress() {
-      var addInfoWindow = this.addInfoWindow;
+      var createMarker = this.createMarker;
       var info = { map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title };
       this.geocoder.geocode({ 'address': info.address + " " + info.city }, function (results, status) {
         if (status === 'OK') {
           var position = results[0].geometry.location;
-          var marker = new google.maps.Marker({
-            map: info.map,
-            position: position
-          });
-          addInfoWindow(marker, map, info.title, info.address);
-          info.markers.push({ marker: marker, address: info.address, city: info.city, title: info.title, lat: position.lat(), lng: position.lng() });
+          createMarker(position, info.map, info.title, info.address, info.city);
         } else {
           alert('Midpoint could not add location for the following reason: ' + status);
         }
@@ -18467,18 +18464,13 @@ var AddLocation = function (_React$Component) {
       var _this3 = this;
 
       var locations = (0, _test_locations.threeRandomLocations)();
-      var addInfoWindow = this.addInfoWindow;
+      var createMarker = this.createMarker;
       var info = { map: this.props.map, markers: this.props.markers };
       locations.forEach(function (testLocation) {
         _this3.geocoder.geocode({ 'address': testLocation.address + " " + testLocation.city }, function (results, status) {
           if (status === 'OK') {
             var position = results[0].geometry.location;
-            var marker = new google.maps.Marker({
-              map: info.map,
-              position: position
-            });
-            addInfoWindow(marker, map, testLocation.title, testLocation.address);
-            info.markers.push({ marker: marker, address: testLocation.address, city: testLocation.city, title: testLocation.title, lat: position.lat(), lng: position.lng() });
+            createMarker(position, info.map, testLocation.title, testLocation.address, testLocation.city);
           } else {
             alert('Midpoint could not add location for the following reason: ' + status);
           }
@@ -18486,8 +18478,14 @@ var AddLocation = function (_React$Component) {
       });
     }
   }, {
-    key: 'addInfoWindow',
-    value: function addInfoWindow(marker, map, title, address) {
+    key: 'createMarker',
+    value: function createMarker(position, map, title, address, city) {
+      var markers = this.props.markers;
+      var deletedMarkers = this.props.deletedMarkers;
+      var marker = new google.maps.Marker({ map: map, position: position });
+      var id = markers.length + deletedMarkers.length;
+      marker.metadata = { id: id };
+      markers.push({ marker: marker, address: address, city: city, title: title, lat: position.lat(), lng: position.lng() });
       var infoWindow = new google.maps.InfoWindow({
         content: '<h1 class="marker-headline">' + title + '</h1><h2 class="marker-info">' + address + '</h2>'
       });
@@ -18496,6 +18494,15 @@ var AddLocation = function (_React$Component) {
       });
       marker.addListener('mouseout', function () {
         return infoWindow.close(map, marker);
+      });
+      marker.addListener('click', function () {
+        markers.forEach(function (listedMarker, idx) {
+          if (listedMarker.marker.metadata.id === marker.metadata.id) {
+            deletedMarkers.push(listedMarker);
+            markers.splice(idx, 1);
+            marker.setMap(null);
+          }
+        });
       });
     }
   }, {

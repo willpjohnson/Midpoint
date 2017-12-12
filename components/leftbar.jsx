@@ -9,7 +9,7 @@ class Leftbar extends React.Component {
   render() {
     return(
       <div id="leftbar">
-        <AddLocation map={this.props.map} markers={this.props.markers} />
+        <AddLocation map={this.props.map} markers={this.props.markers} deletedMarkers={this.props.deletedMarkers} />
       </div>
     )
   }
