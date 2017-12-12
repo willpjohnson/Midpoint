@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingText from './loading_text';
+import Loader from './loader';
 
 class MostConvenient extends React.Component {
   constructor(props) {
@@ -99,7 +99,7 @@ class MostConvenient extends React.Component {
         </li>
       )
     })
-    const body = this.state.loaded ? (<ul>{totalTimesLis}</ul>) : (<LoadingText />)
+    const body = this.state.loaded ? (<ul>{totalTimesLis}</ul>) : (<Loader />)
     return(
       <div id="most-convenient-div">
         <h2 style={{fontWeight: 400, fontSize: 20}}>Most Convenient</h2>

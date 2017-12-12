@@ -1,0 +1,17 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  height: 20px;
+}
+
+.loader-square {
+  height: 14px;
+  width: 14px;
+  margin: 3px;
+  background-color: #f5f5f5;
+  opacity: 0.5;
+}
+
+.loader-full {
+  background-color: #262e35;
+}
