@@ -1,4 +1,5 @@
 import React from 'react';
+import LoadingText from './loading_text';
 
 class MostConvenient extends React.Component {
   constructor(props) {
@@ -6,7 +7,8 @@ class MostConvenient extends React.Component {
 
     this.state = {
       tripSummaries: [],
-      totalTimes: []
+      totalTimes: [],
+      loaded: true
     };
 
     this.getMostConvenient = this.getMostConvenient.bind(this);
@@ -23,6 +25,7 @@ class MostConvenient extends React.Component {
   }
 
   getMostConvenient() {
+    this.setState({loaded: false});
     const directionsService = new google.maps.DirectionsService;
     let markers = this.props.markers;
     const size = markers.length * (markers.length - 1);
@@ -84,7 +87,7 @@ class MostConvenient extends React.Component {
       return a.totalTime - b.totalTime;
     })
 
-    this.setState({tripSummaries, totalTimes});
+    this.setState({tripSummaries, totalTimes, loaded: true});
   }
 
   render() {
@@ -96,14 +99,13 @@ class MostConvenient extends React.Component {
         </li>
       )
     })
+    const body = this.state.loaded ? (<ul>{totalTimesLis}</ul>) : (<LoadingText />)
     return(
       <div id="most-convenient-div">
         <h2 style={{fontWeight: 400, fontSize: 20}}>Most Convenient</h2>
         <input className="button" id="submit" type="button" value="Find" onClick={this.getMostConvenient}></input>
         <div id="most-convenient-directions">
-          <ul>
-            {totalTimesLis}
-          </ul>
+          {body}
         </div>
       </div>
     )
