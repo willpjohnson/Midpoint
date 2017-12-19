@@ -18275,13 +18275,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _map_style = __webpack_require__(36);
+var _map_style = __webpack_require__(28);
 
-var _leftbar = __webpack_require__(28);
+var _leftbar = __webpack_require__(29);
 
 var _leftbar2 = _interopRequireDefault(_leftbar);
 
-var _rightbar = __webpack_require__(31);
+var _rightbar = __webpack_require__(32);
 
 var _rightbar2 = _interopRequireDefault(_rightbar);
 
@@ -18336,593 +18336,6 @@ exports.default = Root;
 
 /***/ }),
 /* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _add_location = __webpack_require__(29);
-
-var _add_location2 = _interopRequireDefault(_add_location);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Leftbar = function (_React$Component) {
-  _inherits(Leftbar, _React$Component);
-
-  function Leftbar(props) {
-    _classCallCheck(this, Leftbar);
-
-    return _possibleConstructorReturn(this, (Leftbar.__proto__ || Object.getPrototypeOf(Leftbar)).call(this, props));
-  }
-
-  _createClass(Leftbar, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { id: 'leftbar' },
-        _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers, deletedMarkers: this.props.deletedMarkers })
-      );
-    }
-  }]);
-
-  return Leftbar;
-}(_react2.default.Component);
-
-exports.default = Leftbar;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _test_locations = __webpack_require__(30);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AddLocation = function (_React$Component) {
-  _inherits(AddLocation, _React$Component);
-
-  function AddLocation(props) {
-    _classCallCheck(this, AddLocation);
-
-    var _this = _possibleConstructorReturn(this, (AddLocation.__proto__ || Object.getPrototypeOf(AddLocation)).call(this, props));
-
-    _this.geocoder = new google.maps.Geocoder();
-    _this.state = { address: undefined, city: "Brooklyn, NY", title: undefined };
-
-    _this.midpoint = null;
-    _this.addAddress = _this.addAddress.bind(_this);
-    _this.updateField = _this.updateField.bind(_this);
-    _this.getMidpoint = _this.getMidpoint.bind(_this);
-    _this.addThreeTestAddresses = _this.addThreeTestAddresses.bind(_this);
-    _this.createMarker = _this.createMarker.bind(_this);
-    return _this;
-  }
-
-  _createClass(AddLocation, [{
-    key: 'updateField',
-    value: function updateField(field) {
-      var _this2 = this;
-
-      return function (e) {
-        _this2.setState(_defineProperty({}, field, e.currentTarget.value));
-      };
-    }
-  }, {
-    key: 'addAddress',
-    value: function addAddress() {
-      var createMarker = this.createMarker;
-      var info = { map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title };
-      this.geocoder.geocode({ 'address': info.address + " " + info.city }, function (results, status) {
-        if (status === 'OK') {
-          var position = results[0].geometry.location;
-          createMarker(position, info.map, info.title, info.address, info.city);
-        } else {
-          alert('Midpoint could not add location for the following reason: ' + status);
-        }
-      });
-    }
-  }, {
-    key: 'addThreeTestAddresses',
-    value: function addThreeTestAddresses() {
-      var _this3 = this;
-
-      var locations = (0, _test_locations.threeRandomLocations)();
-      var createMarker = this.createMarker;
-      var info = { map: this.props.map, markers: this.props.markers };
-      locations.forEach(function (testLocation) {
-        _this3.geocoder.geocode({ 'address': testLocation.address + " " + testLocation.city }, function (results, status) {
-          if (status === 'OK') {
-            var position = results[0].geometry.location;
-            createMarker(position, info.map, testLocation.title, testLocation.address, testLocation.city);
-          } else {
-            alert('Midpoint could not add location for the following reason: ' + status);
-          }
-        });
-      });
-    }
-  }, {
-    key: 'createMarker',
-    value: function createMarker(position, map, title, address, city) {
-      var markers = this.props.markers;
-      var deletedMarkers = this.props.deletedMarkers;
-      var marker = new google.maps.Marker({ map: map, position: position });
-      var id = markers.length + deletedMarkers.length;
-      marker.metadata = { id: id };
-      markers.push({ marker: marker, address: address, city: city, title: title, lat: position.lat(), lng: position.lng() });
-      var infoWindow = new google.maps.InfoWindow({
-        content: '<h1 class="marker-headline">' + title + '</h1><h2 class="marker-info">' + address + '</h2>'
-      });
-      marker.addListener('mouseover', function () {
-        return infoWindow.open(map, marker);
-      });
-      marker.addListener('mouseout', function () {
-        return infoWindow.close(map, marker);
-      });
-      marker.addListener('click', function () {
-        markers.forEach(function (listedMarker, idx) {
-          if (listedMarker.marker.metadata.id === marker.metadata.id) {
-            deletedMarkers.push(listedMarker);
-            markers.splice(idx, 1);
-            marker.setMap(null);
-          }
-        });
-      });
-    }
-  }, {
-    key: 'getMidpoint',
-    value: function getMidpoint() {
-      if (this.midpoint) this.midpoint.setMap(null);
-      var map = this.props.map;
-      var lats = [];
-      var longs = [];
-      this.props.markers.forEach(function (marker) {
-        lats.push(marker.marker.position.lat());
-        longs.push(marker.marker.position.lng());
-      });
-      var avgLat = lats.reduce(function (a, b) {
-        return a + b;
-      }, 0) / lats.length;
-      var avgLong = longs.reduce(function (a, b) {
-        return a + b;
-      }, 0) / longs.length;
-      this.midpoint = new google.maps.Marker({
-        map: map,
-        position: { lat: avgLat, lng: avgLong },
-        icon: 'markers/blue_MarkerM.png'
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { id: 'add-location-form' },
-        _react2.default.createElement(
-          'h2',
-          { style: { fontWeight: 400, fontSize: 20 } },
-          'Add Location'
-        ),
-        _react2.default.createElement('input', { onChange: this.updateField("address"), className: 'add-location-input', id: 'address', type: 'textbox', value: this.state.address, placeholder: 'Street Address' }),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { onChange: this.updateField("city"), className: 'add-location-input', id: 'city', type: 'textbox', value: this.state.city, placeholder: 'City' }),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { onChange: this.updateField("title"), className: 'add-location-input', id: 'title', type: 'textbox', value: this.state.title, placeholder: 'Location Name' }),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add Location', onClick: this.addAddress }),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint }),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add 3 Random Locations', onClick: this.addThreeTestAddresses })
-      );
-    }
-  }]);
-
-  return AddLocation;
-}(_react2.default.Component);
-
-exports.default = AddLocation;
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
-
-// const testLocations = [
-//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
-//   {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
-//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
-//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
-// ]
-
-var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
-  var size = testLocations.length;
-  var idxCollection = [];
-  while (idxCollection.length < 3) {
-    var idx = Math.floor(Math.random() * size);
-    if (!idxCollection.includes(idx)) idxCollection.push(idx);
-  }
-
-  return [testLocations[idxCollection[0]], testLocations[idxCollection[1]], testLocations[idxCollection[2]]];
-};
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _best_subway = __webpack_require__(32);
-
-var _best_subway2 = _interopRequireDefault(_best_subway);
-
-var _most_convenient = __webpack_require__(34);
-
-var _most_convenient2 = _interopRequireDefault(_most_convenient);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Rightbar = function (_React$Component) {
-  _inherits(Rightbar, _React$Component);
-
-  function Rightbar(props) {
-    _classCallCheck(this, Rightbar);
-
-    return _possibleConstructorReturn(this, (Rightbar.__proto__ || Object.getPrototypeOf(Rightbar)).call(this, props));
-  }
-
-  _createClass(Rightbar, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { id: 'rightbar' },
-        _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers }),
-        _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers })
-      );
-    }
-  }]);
-
-  return Rightbar;
-}(_react2.default.Component);
-
-exports.default = Rightbar;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _subway_stops = __webpack_require__(33);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BestSubway = function (_React$Component) {
-  _inherits(BestSubway, _React$Component);
-
-  function BestSubway(props) {
-    _classCallCheck(this, BestSubway);
-
-    var _this = _possibleConstructorReturn(this, (BestSubway.__proto__ || Object.getPrototypeOf(BestSubway)).call(this, props));
-
-    _this.calculateBestSubway = _this.calculateBestSubway.bind(_this);
-    return _this;
-  }
-
-  _createClass(BestSubway, [{
-    key: 'calculateBestSubway',
-    value: function calculateBestSubway() {
-      // const directionsDisplay = new google.maps.DirectionsRenderer;
-      // const directionsService = new google.maps.DirectionsService;
-      // directionsDisplay.setMap(this.props.map);
-      //
-      // brooklyn.forEach( (stop) => {
-      //   let transitTimes = [];
-      //   this.props.markers.forEach( (marker) => {
-      //     directionsService.route({
-      //       origin: {lat: marker.lat, lng: marker.lng},
-      //       destination: {lat: stop.lat, lng: stop.lng},
-      //       travelMode: 'TRANSIT'
-      //     }, function(response, status) {
-      //       if (status === 'OK') {
-      //         let bestRoute = response.routes[0].legs[0];
-      //         let timeValue = bestRoute.duration.value;
-      //         console.log(stop.name);
-      //         console.log(marker.title);
-      //         console.log(timeValue);
-      //         transitTimes.push({origin: marker.title, destination: stop.name, timeValue: timeValue})
-      //       } else {
-      //         // window.alert('Directions request failed due to ' + status);
-      //       }
-      //     })
-      //   })
-      //   console.log(transitTimes);
-      // })
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement('div', { onClick: this.calculateBestSubway });
-    }
-  }]);
-
-  return BestSubway;
-}(_react2.default.Component);
-
-exports.default = BestSubway;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var brooklyn = exports.brooklyn = [{ lat: 40.7081258, lng: -73.9407309, name: "Bedford" }, { lat: 40.7081258, lng: -73.9407309, name: "Lorimer" }, { lat: 40.7081258, lng: -73.9407309, name: "Graham" }, { lat: 40.7105047, lng: -73.9394737, name: "Grand" }, { lat: 40.7105047, lng: -73.9394737, name: "Montrose" }, { lat: 40.7059709, lng: -73.9363043, name: "Morgan" }, { lat: 40.7059709, lng: -73.9363043, name: "Jefferson" }, { lat: 40.7059709, lng: -73.9363043, name: "Dekalb" }, { lat: 40.7059709, lng: -73.9363043, name: "Myrtle Wyckoff" }];
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _loader = __webpack_require__(37);
-
-var _loader2 = _interopRequireDefault(_loader);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MostConvenient = function (_React$Component) {
-  _inherits(MostConvenient, _React$Component);
-
-  function MostConvenient(props) {
-    _classCallCheck(this, MostConvenient);
-
-    var _this = _possibleConstructorReturn(this, (MostConvenient.__proto__ || Object.getPrototypeOf(MostConvenient)).call(this, props));
-
-    _this.state = {
-      tripSummaries: [],
-      totalTimes: [],
-      loaded: true
-    };
-
-    _this.getMostConvenient = _this.getMostConvenient.bind(_this);
-    _this.assessAllTrips = _this.assessAllTrips.bind(_this);
-    _this.routeLocation = _this.routeLocation.bind(_this);
-
-    _this.allRoutes = [];
-    return _this;
-  }
-
-  _createClass(MostConvenient, [{
-    key: 'timeConversion',
-    value: function timeConversion(value) {
-      var minutes = Math.round(value / 60);
-      var seconds = value % 60;
-      return minutes + ' minutes and ' + seconds + ' seconds';
-    }
-  }, {
-    key: 'getMostConvenient',
-    value: function getMostConvenient() {
-      this.setState({ loaded: false });
-      var directionsService = new google.maps.DirectionsService();
-      var markers = this.props.markers;
-      var size = markers.length * (markers.length - 1);
-      for (var i = 0; i < markers.length; i++) {
-        for (var j = 0; j < markers.length; j++) {
-          if (i === j) continue;
-          this.routeLocation(directionsService, markers[j], markers[i], size);
-        }
-      }
-    }
-  }, {
-    key: 'routeLocation',
-    value: function routeLocation(directionsService, origin, destination, size) {
-      var routeLocation = this.routeLocation;
-      var assessAllTrips = this.assessAllTrips;
-      var allRoutes = this.allRoutes;
-      directionsService.route({
-        origin: { lat: origin.lat, lng: origin.lng },
-        destination: { lat: destination.lat, lng: destination.lng },
-        travelMode: 'TRANSIT'
-      }, function (response, status) {
-        if (status === "OK") {
-          var route = response.routes[0].legs[0];
-          allRoutes.push({ origin: origin.title, destination: destination.title, timeValue: route.duration.value, steps: route.steps });
-          if (allRoutes.length === size) assessAllTrips(allRoutes);
-        } else if (status === "OVER_QUERY_LIMIT") {
-          setTimeout(function () {
-            routeLocation(directionsService, origin, destination, size);
-          }, 200);
-        }
-      });
-    }
-  }, {
-    key: 'assessAllTrips',
-    value: function assessAllTrips(allRoutes) {
-      var tripSummaries = [];
-      allRoutes.forEach(function (route) {
-        var notIncluded = true;
-        tripSummaries.forEach(function (trip) {
-          if (trip.destination === route.destination) {
-            notIncluded = false;
-            trip.trips.push(route);
-          }
-        });
-        if (notIncluded) {
-          tripSummaries.push({ destination: route.destination, trips: [route] });
-        }
-      });
-
-      var totalTimes = [];
-      tripSummaries.forEach(function (tripCollection) {
-        var trips = tripCollection.trips;
-        var totalTime = 0;
-        trips.forEach(function (trip) {
-          totalTime += trip.timeValue;
-        });
-        totalTimes.push({ destination: tripCollection.destination, totalTime: totalTime });
-      });
-
-      totalTimes.sort(function (a, b) {
-        return a.totalTime - b.totalTime;
-      });
-
-      this.setState({ tripSummaries: tripSummaries, totalTimes: totalTimes, loaded: true });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      var totalTimesLis = this.state.totalTimes.map(function (totalTime, idx) {
-        return _react2.default.createElement(
-          'li',
-          { key: idx },
-          _react2.default.createElement(
-            'h3',
-            null,
-            totalTime.destination
-          ),
-          _react2.default.createElement(
-            'h4',
-            null,
-            _this2.timeConversion(totalTime.totalTime)
-          )
-        );
-      });
-      var body = this.state.loaded ? _react2.default.createElement(
-        'ul',
-        null,
-        totalTimesLis
-      ) : _react2.default.createElement(_loader2.default, null);
-      return _react2.default.createElement(
-        'div',
-        { id: 'most-convenient-div' },
-        _react2.default.createElement(
-          'h2',
-          { style: { fontWeight: 400, fontSize: 20 } },
-          'Most Convenient'
-        ),
-        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.getMostConvenient }),
-        _react2.default.createElement(
-          'div',
-          { id: 'most-convenient-directions' },
-          body
-        )
-      );
-    }
-  }]);
-
-  return MostConvenient;
-}(_react2.default.Component);
-
-exports.default = MostConvenient;
-
-/***/ }),
-/* 35 */,
-/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19042,7 +18455,644 @@ var mapStyle = exports.mapStyle = {
 };
 
 /***/ }),
-/* 37 */
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _add_location = __webpack_require__(30);
+
+var _add_location2 = _interopRequireDefault(_add_location);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Leftbar = function (_React$Component) {
+  _inherits(Leftbar, _React$Component);
+
+  function Leftbar(props) {
+    _classCallCheck(this, Leftbar);
+
+    return _possibleConstructorReturn(this, (Leftbar.__proto__ || Object.getPrototypeOf(Leftbar)).call(this, props));
+  }
+
+  _createClass(Leftbar, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { id: 'leftbar' },
+        _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers, deletedMarkers: this.props.deletedMarkers })
+      );
+    }
+  }]);
+
+  return Leftbar;
+}(_react2.default.Component);
+
+exports.default = Leftbar;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _test_locations = __webpack_require__(31);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddLocation = function (_React$Component) {
+  _inherits(AddLocation, _React$Component);
+
+  function AddLocation(props) {
+    _classCallCheck(this, AddLocation);
+
+    var _this = _possibleConstructorReturn(this, (AddLocation.__proto__ || Object.getPrototypeOf(AddLocation)).call(this, props));
+
+    _this.geocoder = new google.maps.Geocoder();
+    _this.state = { address: undefined, city: "Brooklyn, NY", title: undefined };
+
+    _this.midpoint = null;
+    _this.addAddress = _this.addAddress.bind(_this);
+    _this.updateField = _this.updateField.bind(_this);
+    _this.getMidpoint = _this.getMidpoint.bind(_this);
+    _this.addThreeTestAddresses = _this.addThreeTestAddresses.bind(_this);
+    _this.createMarker = _this.createMarker.bind(_this);
+    return _this;
+  }
+
+  _createClass(AddLocation, [{
+    key: 'updateField',
+    value: function updateField(field) {
+      var _this2 = this;
+
+      return function (e) {
+        _this2.setState(_defineProperty({}, field, e.currentTarget.value));
+      };
+    }
+  }, {
+    key: 'addAddress',
+    value: function addAddress() {
+      var createMarker = this.createMarker;
+      var info = { map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title };
+      this.geocoder.geocode({ 'address': info.address + " " + info.city }, function (results, status) {
+        if (status === 'OK') {
+          var position = results[0].geometry.location;
+          createMarker(position, info.map, info.title, info.address, info.city);
+        } else {
+          alert('Midpoint could not add location for the following reason: ' + status);
+        }
+      });
+    }
+  }, {
+    key: 'addThreeTestAddresses',
+    value: function addThreeTestAddresses() {
+      var _this3 = this;
+
+      var locations = (0, _test_locations.threeRandomLocations)();
+      var createMarker = this.createMarker;
+      var info = { map: this.props.map, markers: this.props.markers };
+      locations.forEach(function (testLocation) {
+        _this3.geocoder.geocode({ 'address': testLocation.address + " " + testLocation.city }, function (results, status) {
+          if (status === 'OK') {
+            var position = results[0].geometry.location;
+            createMarker(position, info.map, testLocation.title, testLocation.address, testLocation.city);
+          } else {
+            alert('Midpoint could not add location for the following reason: ' + status);
+          }
+        });
+      });
+    }
+  }, {
+    key: 'createMarker',
+    value: function createMarker(position, map, title, address, city) {
+      var markers = this.props.markers;
+      var deletedMarkers = this.props.deletedMarkers;
+      var marker = new google.maps.Marker({ map: map, position: position });
+      var id = markers.length + deletedMarkers.length;
+      marker.metadata = { id: id };
+      markers.push({ marker: marker, address: address, city: city, title: title, lat: position.lat(), lng: position.lng() });
+      var infoWindow = new google.maps.InfoWindow({
+        content: '<h1 class="marker-headline">' + title + '</h1><h2 class="marker-info">' + address + '</h2>'
+      });
+      marker.addListener('mouseover', function () {
+        return infoWindow.open(map, marker);
+      });
+      marker.addListener('mouseout', function () {
+        return infoWindow.close(map, marker);
+      });
+      marker.addListener('click', function () {
+        markers.forEach(function (listedMarker, idx) {
+          if (listedMarker.marker.metadata.id === marker.metadata.id) {
+            deletedMarkers.push(listedMarker);
+            markers.splice(idx, 1);
+            marker.setMap(null);
+          }
+        });
+      });
+      this.resizeMap(markers, map);
+    }
+  }, {
+    key: 'resizeMap',
+    value: function resizeMap(markers, map) {
+      var lats = [];
+      var lngs = [];
+      markers.forEach(function (marker) {
+        lats.push(marker.lat);
+        lngs.push(marker.lng);
+      });
+      var sw = new google.maps.LatLng(Math.min.apply(Math, lats), Math.min.apply(Math, lngs));
+      var ne = new google.maps.LatLng(Math.max.apply(Math, lats), Math.max.apply(Math, lngs));
+      var bounds = new google.maps.LatLngBounds(sw, ne);
+      map.fitBounds(bounds, 30);
+    }
+  }, {
+    key: 'getMidpoint',
+    value: function getMidpoint() {
+      if (this.midpoint) this.midpoint.setMap(null);
+      var map = this.props.map;
+      var lats = [];
+      var longs = [];
+      this.props.markers.forEach(function (marker) {
+        lats.push(marker.marker.position.lat());
+        longs.push(marker.marker.position.lng());
+      });
+      var avgLat = lats.reduce(function (a, b) {
+        return a + b;
+      }, 0) / lats.length;
+      var avgLong = longs.reduce(function (a, b) {
+        return a + b;
+      }, 0) / longs.length;
+      this.midpoint = new google.maps.Marker({
+        map: map,
+        position: { lat: avgLat, lng: avgLong },
+        icon: 'markers/blue_MarkerM.png'
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { id: 'add-location-form' },
+        _react2.default.createElement(
+          'h2',
+          { style: { fontWeight: 400, fontSize: 20 } },
+          'Add Location'
+        ),
+        _react2.default.createElement('input', { onChange: this.updateField("address"), className: 'add-location-input', id: 'address', type: 'textbox', value: this.state.address, placeholder: 'Street Address' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { onChange: this.updateField("city"), className: 'add-location-input', id: 'city', type: 'textbox', value: this.state.city, placeholder: 'City' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { onChange: this.updateField("title"), className: 'add-location-input', id: 'title', type: 'textbox', value: this.state.title, placeholder: 'Location Name' }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add Location', onClick: this.addAddress }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add 3 Random Locations', onClick: this.addThreeTestAddresses })
+      );
+    }
+  }]);
+
+  return AddLocation;
+}(_react2.default.Component);
+
+exports.default = AddLocation;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
+
+// const testLocations = [
+//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
+//   {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
+//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
+//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
+// ]
+
+var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
+  var size = testLocations.length;
+  var idxCollection = [];
+  while (idxCollection.length < 3) {
+    var idx = Math.floor(Math.random() * size);
+    if (!idxCollection.includes(idx)) idxCollection.push(idx);
+  }
+
+  return [testLocations[idxCollection[0]], testLocations[idxCollection[1]], testLocations[idxCollection[2]]];
+};
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _best_subway = __webpack_require__(33);
+
+var _best_subway2 = _interopRequireDefault(_best_subway);
+
+var _most_convenient = __webpack_require__(35);
+
+var _most_convenient2 = _interopRequireDefault(_most_convenient);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Rightbar = function (_React$Component) {
+  _inherits(Rightbar, _React$Component);
+
+  function Rightbar(props) {
+    _classCallCheck(this, Rightbar);
+
+    return _possibleConstructorReturn(this, (Rightbar.__proto__ || Object.getPrototypeOf(Rightbar)).call(this, props));
+  }
+
+  _createClass(Rightbar, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { id: 'rightbar' },
+        _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers }),
+        _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers })
+      );
+    }
+  }]);
+
+  return Rightbar;
+}(_react2.default.Component);
+
+exports.default = Rightbar;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _subway_stops = __webpack_require__(34);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BestSubway = function (_React$Component) {
+  _inherits(BestSubway, _React$Component);
+
+  function BestSubway(props) {
+    _classCallCheck(this, BestSubway);
+
+    var _this = _possibleConstructorReturn(this, (BestSubway.__proto__ || Object.getPrototypeOf(BestSubway)).call(this, props));
+
+    _this.calculateBestSubway = _this.calculateBestSubway.bind(_this);
+    return _this;
+  }
+
+  _createClass(BestSubway, [{
+    key: 'calculateBestSubway',
+    value: function calculateBestSubway() {
+      // const directionsDisplay = new google.maps.DirectionsRenderer;
+      // const directionsService = new google.maps.DirectionsService;
+      // directionsDisplay.setMap(this.props.map);
+      //
+      // brooklyn.forEach( (stop) => {
+      //   let transitTimes = [];
+      //   this.props.markers.forEach( (marker) => {
+      //     directionsService.route({
+      //       origin: {lat: marker.lat, lng: marker.lng},
+      //       destination: {lat: stop.lat, lng: stop.lng},
+      //       travelMode: 'TRANSIT'
+      //     }, function(response, status) {
+      //       if (status === 'OK') {
+      //         let bestRoute = response.routes[0].legs[0];
+      //         let timeValue = bestRoute.duration.value;
+      //         console.log(stop.name);
+      //         console.log(marker.title);
+      //         console.log(timeValue);
+      //         transitTimes.push({origin: marker.title, destination: stop.name, timeValue: timeValue})
+      //       } else {
+      //         // window.alert('Directions request failed due to ' + status);
+      //       }
+      //     })
+      //   })
+      //   console.log(transitTimes);
+      // })
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('div', { onClick: this.calculateBestSubway });
+    }
+  }]);
+
+  return BestSubway;
+}(_react2.default.Component);
+
+exports.default = BestSubway;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var brooklyn = exports.brooklyn = [{ lat: 40.7081258, lng: -73.9407309, name: "Bedford" }, { lat: 40.7081258, lng: -73.9407309, name: "Lorimer" }, { lat: 40.7081258, lng: -73.9407309, name: "Graham" }, { lat: 40.7105047, lng: -73.9394737, name: "Grand" }, { lat: 40.7105047, lng: -73.9394737, name: "Montrose" }, { lat: 40.7059709, lng: -73.9363043, name: "Morgan" }, { lat: 40.7059709, lng: -73.9363043, name: "Jefferson" }, { lat: 40.7059709, lng: -73.9363043, name: "Dekalb" }, { lat: 40.7059709, lng: -73.9363043, name: "Myrtle Wyckoff" }];
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _loader = __webpack_require__(36);
+
+var _loader2 = _interopRequireDefault(_loader);
+
+var _trip_summary = __webpack_require__(37);
+
+var _trip_summary2 = _interopRequireDefault(_trip_summary);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MostConvenient = function (_React$Component) {
+  _inherits(MostConvenient, _React$Component);
+
+  function MostConvenient(props) {
+    _classCallCheck(this, MostConvenient);
+
+    var _this = _possibleConstructorReturn(this, (MostConvenient.__proto__ || Object.getPrototypeOf(MostConvenient)).call(this, props));
+
+    _this.state = {
+      tripSummaries: [],
+      loaded: true
+    };
+
+    _this.getMostConvenient = _this.getMostConvenient.bind(_this);
+    _this.assessAllTrips = _this.assessAllTrips.bind(_this);
+    _this.routeLocation = _this.routeLocation.bind(_this);
+    _this.displayDirections = _this.displayDirections.bind(_this);
+    _this.renderTripSummary = _this.renderTripSummary.bind(_this);
+    _this.removeTripSummary = _this.removeTripSummary.bind(_this);
+
+    _this.allRoutes = [];
+    return _this;
+  }
+
+  _createClass(MostConvenient, [{
+    key: 'timeConversion',
+    value: function timeConversion(value) {
+      var minutes = Math.round(value / 60);
+      var seconds = value % 60;
+      return minutes + ' minutes and ' + seconds + ' seconds';
+    }
+  }, {
+    key: 'getMostConvenient',
+    value: function getMostConvenient() {
+      this.setState({ loaded: false });
+      var directionsService = new google.maps.DirectionsService();
+      var markers = this.props.markers;
+      var size = markers.length * (markers.length - 1);
+      for (var i = 0; i < markers.length; i++) {
+        for (var j = 0; j < markers.length; j++) {
+          if (i === j) continue;
+          this.routeLocation(directionsService, markers[j], markers[i], size);
+        }
+      }
+    }
+  }, {
+    key: 'routeLocation',
+    value: function routeLocation(directionsService, origin, destination, size) {
+      var routeLocation = this.routeLocation;
+      var assessAllTrips = this.assessAllTrips;
+      var allRoutes = this.allRoutes;
+      directionsService.route({
+        origin: { lat: origin.lat, lng: origin.lng },
+        destination: { lat: destination.lat, lng: destination.lng },
+        travelMode: 'TRANSIT'
+      }, function (response, status) {
+        if (status === "OK") {
+          var route = response.routes[0].legs[0];
+          allRoutes.push({ displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps });
+          if (allRoutes.length === size) assessAllTrips(allRoutes);
+        } else if (status === "OVER_QUERY_LIMIT") {
+          setTimeout(function () {
+            routeLocation(directionsService, origin, destination, size);
+          }, 200);
+        }
+      });
+    }
+  }, {
+    key: 'assessAllTrips',
+    value: function assessAllTrips(allRoutes) {
+      var tripSummaries = [];
+      allRoutes.forEach(function (route) {
+        var notIncluded = true;
+        tripSummaries.forEach(function (trip) {
+          if (trip.destination === route.destination) {
+            notIncluded = false;
+            trip.trips.push(route);
+          }
+        });
+        if (notIncluded) {
+          tripSummaries.push({ destination: route.destination, destinationID: route.destinationID, trips: [route] });
+        }
+      });
+
+      tripSummaries.forEach(function (tripCollection) {
+        var trips = tripCollection.trips;
+        var totalTime = 0;
+        trips.forEach(function (trip) {
+          totalTime += trip.timeValue;
+        });
+        tripCollection.totalTime = totalTime;
+      });
+
+      tripSummaries.sort(function (a, b) {
+        return a.totalTime - b.totalTime;
+      });
+
+      this.setState({ tripSummaries: tripSummaries, loaded: true });
+    }
+  }, {
+    key: 'displayDirections',
+    value: function displayDirections(totalTime) {
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(this.props.map);
+      this.state.tripSummaries.forEach(function (summary) {
+        if (summary.destinationID === totalTime.destinationID) {
+          var trip = summary.trips[0];
+          directionsDisplay.setDirections(trip.displayInfo);
+        }
+      });
+    }
+  }, {
+    key: 'renderTripSummary',
+    value: function renderTripSummary(idx) {
+      var tripSummary = document.getElementById('trip-summary-' + idx);
+      tripSummary.classList.remove("hidden");
+    }
+  }, {
+    key: 'removeTripSummary',
+    value: function removeTripSummary(idx) {
+      var tripSummary = document.getElementById('trip-summary-' + idx);
+      tripSummary.classList.add("hidden");
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var totalTimesLIs = this.state.tripSummaries.map(function (tripSummary, idx) {
+        return _react2.default.createElement(
+          'li',
+          { onClick: function onClick() {
+              return _this2.displayDirections(tripSummary);
+            }, onMouseOver: function onMouseOver() {
+              _this2.renderTripSummary(idx);
+            }, onMouseOut: function onMouseOut() {
+              _this2.removeTripSummary(idx);
+            }, className: 'most-convenient-location', key: idx },
+          _react2.default.createElement(
+            'h3',
+            { className: 'most-convenient-location-header' },
+            tripSummary.destination
+          ),
+          _react2.default.createElement(
+            'h4',
+            { className: 'most-convenient-location-time' },
+            _this2.timeConversion(tripSummary.totalTime)
+          ),
+          _react2.default.createElement(_trip_summary2.default, { id: 'trip-summary-' + idx, summary: tripSummary })
+        );
+      });
+      var body = this.state.loaded ? _react2.default.createElement(
+        'ul',
+        null,
+        totalTimesLIs
+      ) : _react2.default.createElement(_loader2.default, null);
+      return _react2.default.createElement(
+        'div',
+        { id: 'most-convenient-div' },
+        _react2.default.createElement(
+          'h2',
+          { style: { fontWeight: 400, fontSize: 20 } },
+          'Most Convenient'
+        ),
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.getMostConvenient }),
+        _react2.default.createElement(
+          'div',
+          { id: 'most-convenient-directions' },
+          body
+        )
+      );
+    }
+  }]);
+
+  return MostConvenient;
+}(_react2.default.Component);
+
+exports.default = MostConvenient;
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19151,6 +19201,111 @@ var Loader = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Loader;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TripSummary = function (_React$Component) {
+  _inherits(TripSummary, _React$Component);
+
+  function TripSummary(props) {
+    _classCallCheck(this, TripSummary);
+
+    var _this = _possibleConstructorReturn(this, (TripSummary.__proto__ || Object.getPrototypeOf(TripSummary)).call(this, props));
+
+    _this.renderDirections = _this.renderDirections.bind(_this);
+    _this.removeDirections = _this.removeDirections.bind(_this);
+    return _this;
+  }
+
+  _createClass(TripSummary, [{
+    key: "renderDirections",
+    value: function renderDirections(idx) {
+      var directions = document.getElementById(this.props.id + "-directions-" + idx);
+      directions.classList.remove("hidden");
+    }
+  }, {
+    key: "removeDirections",
+    value: function removeDirections(idx) {
+      var directions = document.getElementById(this.props.id + "-directions-" + idx);
+      directions.classList.add("hidden");
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var originLIs = this.props.summary.trips.map(function (trip, idx) {
+        var stepsLIs = trip.steps.map(function (step, jdx) {
+          return _react2.default.createElement(
+            "li",
+            { key: jdx, className: "trip-summary-directions-steps" },
+            step.instructions
+          );
+        });
+        return _react2.default.createElement(
+          "li",
+          { onMouseOver: function onMouseOver() {
+              _this2.renderDirections(idx);
+            }, onMouseOut: function onMouseOut() {
+              _this2.removeDirections(idx);
+            }, key: idx, className: "trip-summary-origin" },
+          trip.origin,
+          _react2.default.createElement(
+            "div",
+            { className: "trip-summary-directions hidden", id: _this2.props.id + "-directions-" + idx },
+            _react2.default.createElement(
+              "ul",
+              { style: { margin: "5px" } },
+              stepsLIs
+            )
+          )
+        );
+      });
+
+      return _react2.default.createElement(
+        "div",
+        { id: this.props.id, className: "trip-summary hidden" },
+        _react2.default.createElement(
+          "h1",
+          { style: { textSize: "14px", margin: "6px" } },
+          "Coming from..."
+        ),
+        _react2.default.createElement(
+          "ul",
+          null,
+          originLIs
+        )
+      );
+    }
+  }]);
+
+  return TripSummary;
+}(_react2.default.Component);
+
+exports.default = TripSummary;
 
 /***/ })
 /******/ ]);

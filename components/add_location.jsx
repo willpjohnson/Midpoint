@@ -71,6 +71,20 @@ class AddLocation extends React.Component {
         }
       });
     })
+    this.resizeMap(markers, map);
+  }
+
+  resizeMap(markers, map) {
+    const lats = [];
+    const lngs = [];
+    markers.forEach( (marker) => {
+      lats.push(marker.lat);
+      lngs.push(marker.lng);
+    })
+    const sw = new google.maps.LatLng(Math.min(...lats), Math.min(...lngs));
+    const ne = new google.maps.LatLng(Math.max(...lats), Math.max(...lngs));
+    const bounds = new google.maps.LatLngBounds(sw, ne);
+    map.fitBounds(bounds, 30);
   }
 
   getMidpoint() {

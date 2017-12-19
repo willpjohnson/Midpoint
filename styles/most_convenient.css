@@ -1,0 +1,28 @@
+#most-convenient-div {
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+#most-convenient-directions {
+  margin: 0 auto;
+  margin-top: 15px;
+  width: 85%;
+  min-height: 20px;
+  border: 1px solid #262e35;
+  border-radius: 2px;
+  background-color: white;
+}
+
+.most-convenient-location {
+  cursor: pointer;
+  position: relative;
+}
+
+.most-convenient-location-header {
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+.most-convenient-location-time {
+  margin-bottom: 6px;
+}

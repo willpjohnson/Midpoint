@@ -1,5 +1,7 @@
 import React from 'react';
+
 import Loader from './loader';
+import TripSummary from './trip_summary';
 
 class MostConvenient extends React.Component {
   constructor(props) {
@@ -7,13 +9,15 @@ class MostConvenient extends React.Component {
 
     this.state = {
       tripSummaries: [],
-      totalTimes: [],
       loaded: true
     };
 
     this.getMostConvenient = this.getMostConvenient.bind(this);
     this.assessAllTrips = this.assessAllTrips.bind(this);
     this.routeLocation = this.routeLocation.bind(this);
+    this.displayDirections = this.displayDirections.bind(this);
+    this.renderTripSummary = this.renderTripSummary.bind(this);
+    this.removeTripSummary = this.removeTripSummary.bind(this);
 
     this.allRoutes = [];
   }
@@ -48,7 +52,7 @@ class MostConvenient extends React.Component {
     }, function(response, status) {
       if (status === "OK") {
         let route = response.routes[0].legs[0];
-        allRoutes.push({origin: origin.title, destination: destination.title, timeValue: route.duration.value, steps: route.steps});
+        allRoutes.push({displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps});
         if (allRoutes.length === size) assessAllTrips(allRoutes);
       } else if (status === "OVER_QUERY_LIMIT") {
         setTimeout( () => {
@@ -69,37 +73,58 @@ class MostConvenient extends React.Component {
         }
       });
       if (notIncluded) {
-        tripSummaries.push({destination: route.destination, trips: [route]});
+        tripSummaries.push({destination: route.destination, destinationID: route.destinationID, trips: [route]});
       }
     });
 
-    const totalTimes = [];
     tripSummaries.forEach( (tripCollection) => {
       let trips = tripCollection.trips;
       let totalTime = 0;
       trips.forEach( (trip) => {
         totalTime += trip.timeValue;
       })
-      totalTimes.push({destination: tripCollection.destination, totalTime})
+      tripCollection.totalTime = totalTime;
     })
 
-    totalTimes.sort( (a, b) => {
+    tripSummaries.sort( (a, b) => {
       return a.totalTime - b.totalTime;
     })
 
-    this.setState({tripSummaries, totalTimes, loaded: true});
+    this.setState({tripSummaries, loaded: true});
+  }
+
+  displayDirections(totalTime) {
+    const directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay.setMap(this.props.map);
+    this.state.tripSummaries.forEach( (summary) => {
+      if (summary.destinationID === totalTime.destinationID) {
+        let trip = summary.trips[0];
+        directionsDisplay.setDirections(trip.displayInfo);
+      }
+    })
+  }
+
+  renderTripSummary(idx) {
+    const tripSummary = document.getElementById(`trip-summary-${idx}`);
+    tripSummary.classList.remove("hidden");
+  }
+
+  removeTripSummary(idx) {
+    const tripSummary = document.getElementById(`trip-summary-${idx}`);
+    tripSummary.classList.add("hidden");
   }
 
   render() {
-    const totalTimesLis = this.state.totalTimes.map( (totalTime, idx) => {
+    const totalTimesLIs = this.state.tripSummaries.map( (tripSummary, idx) => {
       return(
-        <li key={idx}>
-          <h3>{totalTime.destination}</h3>
-          <h4>{this.timeConversion(totalTime.totalTime)}</h4>
+        <li onClick={() => this.displayDirections(tripSummary)} onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
+          <h3 className="most-convenient-location-header">{tripSummary.destination}</h3>
+          <h4 className="most-convenient-location-time">{this.timeConversion(tripSummary.totalTime)}</h4>
+          <TripSummary id={`trip-summary-${idx}`} summary={tripSummary}/>
         </li>
       )
     })
-    const body = this.state.loaded ? (<ul>{totalTimesLis}</ul>) : (<Loader />)
+    const body = this.state.loaded ? (<ul>{totalTimesLIs}</ul>) : (<Loader />)
     return(
       <div id="most-convenient-div">
         <h2 style={{fontWeight: 400, fontSize: 20}}>Most Convenient</h2>
