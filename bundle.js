@@ -18641,6 +18641,7 @@ var AddLocation = function (_React$Component) {
       var ne = new google.maps.LatLng(Math.max.apply(Math, lats), Math.max.apply(Math, lngs));
       var bounds = new google.maps.LatLngBounds(sw, ne);
       map.fitBounds(bounds, 30);
+      if (map.zoom > 15) map.setZoom(15);
     }
   }, {
     key: 'getMidpoint',
@@ -18707,14 +18708,16 @@ exports.default = AddLocation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
-
 // const testLocations = [
-//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
-//   {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
-//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
-//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
+//   {address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza"},
+//   {address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza"},
+//   {address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's"},
+//   {address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza"},
+//   {address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza"},
+//   {address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village"}
 // ]
+
+var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn, NY", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
 
 var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
   var size = testLocations.length;

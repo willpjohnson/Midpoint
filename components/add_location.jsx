@@ -85,6 +85,7 @@ class AddLocation extends React.Component {
     const ne = new google.maps.LatLng(Math.max(...lats), Math.max(...lngs));
     const bounds = new google.maps.LatLngBounds(sw, ne);
     map.fitBounds(bounds, 30);
+    if (map.zoom > 15) map.setZoom(15);
   }
 
   getMidpoint() {
