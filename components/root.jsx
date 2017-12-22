@@ -21,7 +21,7 @@ class Root extends React.Component {
     return(
       <div>
         <Leftbar map={this.map} markers={this.markers} deletedMarkers={this.deletedMarkers} />
-        <Rightbar map={this.map} markers={this.markers} />
+        <Rightbar map={this.map} markers={this.markers} deletedMarkers={this.deletedMarkers}/>
         <div id="map"></div>
       </div>
     )

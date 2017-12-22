@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { timeConversion } from '../javascripts/time_conversion';
+
 class TripSummary extends React.Component {
   constructor(props) {
     super(props)
@@ -25,7 +27,8 @@ class TripSummary extends React.Component {
       })
       return(
         <li onMouseOver={() => {this.renderDirections(idx)}} onMouseOut={() => {this.removeDirections(idx)}} key={idx} className="trip-summary-origin">
-          {trip.origin}
+          <h3 className="trip-summary-origin-header">{trip.origin}</h3>
+          <h4 className="trip-summary-origin-time">{timeConversion(trip.timeValue)}</h4>
           <div className="trip-summary-directions hidden" id={`${this.props.id}-directions-${idx}`}>
             <ul style={{margin: "5px"}}>{stepsLIs}</ul>
           </div>

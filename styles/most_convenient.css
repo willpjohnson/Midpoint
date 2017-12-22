@@ -1,5 +1,4 @@
 #most-convenient-div {
-  margin-top: 50px;
   margin-bottom: 10px;
 }
 
@@ -18,11 +17,15 @@
   position: relative;
 }
 
+.most-convenient-location:hover {
+  background-color: #f5f5f5;
+}
+
 .most-convenient-location-header {
   font-size: 18px;
-  margin-top: 6px;
+  padding-top: 6px;
 }
 
 .most-convenient-location-time {
-  margin-bottom: 6px;
+  padding-bottom: 6px;
 }

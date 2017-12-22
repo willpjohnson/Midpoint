@@ -21,11 +21,30 @@
 }
 
 #add-location-form {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .add-location-input {
   margin: 4px;
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 16px;
+}
+
+.rightbar-arrows {
+  margin-top: 7px;
+  height: 10px;
+  cursor: pointer;
+}
+
+.rightbar-arrows:hover {
+  opacity: 0.5;
+}
+
+#rightbar-header {
+  font-size: 20px;
+  margin: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
 }

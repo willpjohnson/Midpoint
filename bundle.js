@@ -18320,7 +18320,7 @@ var Root = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(_leftbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers }),
-        _react2.default.createElement(_rightbar2.default, { map: this.map, markers: this.markers }),
+        _react2.default.createElement(_rightbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers }),
         _react2.default.createElement('div', { id: 'map' })
       );
     }
@@ -18551,7 +18551,6 @@ var AddLocation = function (_React$Component) {
     _this.midpoint = null;
     _this.addAddress = _this.addAddress.bind(_this);
     _this.updateField = _this.updateField.bind(_this);
-    _this.getMidpoint = _this.getMidpoint.bind(_this);
     _this.addThreeTestAddresses = _this.addThreeTestAddresses.bind(_this);
     _this.createMarker = _this.createMarker.bind(_this);
     return _this;
@@ -18604,7 +18603,7 @@ var AddLocation = function (_React$Component) {
     value: function createMarker(position, map, title, address, city) {
       var markers = this.props.markers;
       var deletedMarkers = this.props.deletedMarkers;
-      var marker = new google.maps.Marker({ map: map, position: position });
+      var marker = new google.maps.Marker({ map: map, position: position, icon: "markers/default.png" });
       var id = markers.length + deletedMarkers.length;
       marker.metadata = { id: id };
       markers.push({ marker: marker, address: address, city: city, title: title, lat: position.lat(), lng: position.lng() });
@@ -18644,29 +18643,6 @@ var AddLocation = function (_React$Component) {
       if (map.zoom > 15) map.setZoom(15);
     }
   }, {
-    key: 'getMidpoint',
-    value: function getMidpoint() {
-      if (this.midpoint) this.midpoint.setMap(null);
-      var map = this.props.map;
-      var lats = [];
-      var longs = [];
-      this.props.markers.forEach(function (marker) {
-        lats.push(marker.marker.position.lat());
-        longs.push(marker.marker.position.lng());
-      });
-      var avgLat = lats.reduce(function (a, b) {
-        return a + b;
-      }, 0) / lats.length;
-      var avgLong = longs.reduce(function (a, b) {
-        return a + b;
-      }, 0) / longs.length;
-      this.midpoint = new google.maps.Marker({
-        map: map,
-        position: { lat: avgLat, lng: avgLong },
-        icon: 'markers/blue_MarkerM.png'
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -18683,9 +18659,8 @@ var AddLocation = function (_React$Component) {
         _react2.default.createElement('br', null),
         _react2.default.createElement('input', { onChange: this.updateField("title"), className: 'add-location-input', id: 'title', type: 'textbox', value: this.state.title, placeholder: 'Location Name' }),
         _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add Location', onClick: this.addAddress }),
         _react2.default.createElement('br', null),
-        _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint }),
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add Location', onClick: this.addAddress }),
         _react2.default.createElement('br', null),
         _react2.default.createElement('br', null),
         _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add 3 Random Locations', onClick: this.addThreeTestAddresses })
@@ -18755,6 +18730,10 @@ var _most_convenient = __webpack_require__(35);
 
 var _most_convenient2 = _interopRequireDefault(_most_convenient);
 
+var _midpoint = __webpack_require__(39);
+
+var _midpoint2 = _interopRequireDefault(_midpoint);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18769,17 +18748,60 @@ var Rightbar = function (_React$Component) {
   function Rightbar(props) {
     _classCallCheck(this, Rightbar);
 
-    return _possibleConstructorReturn(this, (Rightbar.__proto__ || Object.getPrototypeOf(Rightbar)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Rightbar.__proto__ || Object.getPrototypeOf(Rightbar)).call(this, props));
+
+    _this.state = { features: ["midpoint", "most_convenient"] };
+
+    _this.cycleLeft = _this.cycleLeft.bind(_this);
+    _this.cycleRight = _this.cycleRight.bind(_this);
+    return _this;
   }
 
   _createClass(Rightbar, [{
+    key: 'cycleLeft',
+    value: function cycleLeft() {
+      var features = this.state.features;
+      var cycledFeatures = features.slice(1).concat(features[0]);
+      this.setState({ features: cycledFeatures });
+      console.log(this.state.features);
+    }
+  }, {
+    key: 'cycleRight',
+    value: function cycleRight() {
+      var features = this.state.features;
+      var cycledFeatures = [features[features.length - 1]].concat(features.slice(0, features.length - 1));
+      this.setState({ features: cycledFeatures });
+      console.log(this.state.features);
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var feature = this.state.features[0];
+      var featureElement = void 0;
+      var featureHeader = void 0;
+      if (feature === 'midpoint') {
+        featureElement = _react2.default.createElement(_midpoint2.default, { map: this.props.map, markers: this.props.markers });
+        featureHeader = "Midpoint";
+      } else if (feature === 'most_convenient') {
+        featureElement = _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers });
+        featureHeader = "Most Convenient Location";
+      }
+
       return _react2.default.createElement(
         'div',
         { id: 'rightbar' },
-        _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers }),
-        _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers })
+        _react2.default.createElement(
+          'div',
+          { id: 'rightbar-header' },
+          _react2.default.createElement('img', { onClick: this.cycleLeft, className: 'rightbar-arrows', src: 'images/arrow-left.png' }),
+          _react2.default.createElement(
+            'h2',
+            null,
+            featureHeader
+          ),
+          _react2.default.createElement('img', { onClick: this.cycleRight, className: 'rightbar-arrows', src: 'images/arrow-right.png' })
+        ),
+        featureElement
       );
     }
   }]);
@@ -18899,6 +18921,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _time_conversion = __webpack_require__(38);
+
 var _loader = __webpack_require__(36);
 
 var _loader2 = _interopRequireDefault(_loader);
@@ -18940,13 +18964,6 @@ var MostConvenient = function (_React$Component) {
   }
 
   _createClass(MostConvenient, [{
-    key: 'timeConversion',
-    value: function timeConversion(value) {
-      var minutes = Math.round(value / 60);
-      var seconds = value % 60;
-      return minutes + ' minutes and ' + seconds + ' seconds';
-    }
-  }, {
     key: 'getMostConvenient',
     value: function getMostConvenient() {
       this.setState({ loaded: false });
@@ -19061,7 +19078,7 @@ var MostConvenient = function (_React$Component) {
           _react2.default.createElement(
             'h4',
             { className: 'most-convenient-location-time' },
-            _this2.timeConversion(tripSummary.totalTime)
+            (0, _time_conversion.timeConversion)(tripSummary.totalTime)
           ),
           _react2.default.createElement(_trip_summary2.default, { id: 'trip-summary-' + idx, summary: tripSummary })
         );
@@ -19074,11 +19091,6 @@ var MostConvenient = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'most-convenient-div' },
-        _react2.default.createElement(
-          'h2',
-          { style: { fontWeight: 400, fontSize: 20 } },
-          'Most Convenient'
-        ),
         _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.getMostConvenient }),
         _react2.default.createElement(
           'div',
@@ -19222,6 +19234,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _time_conversion = __webpack_require__(38);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19244,43 +19258,52 @@ var TripSummary = function (_React$Component) {
   }
 
   _createClass(TripSummary, [{
-    key: "renderDirections",
+    key: 'renderDirections',
     value: function renderDirections(idx) {
-      var directions = document.getElementById(this.props.id + "-directions-" + idx);
+      var directions = document.getElementById(this.props.id + '-directions-' + idx);
       directions.classList.remove("hidden");
     }
   }, {
-    key: "removeDirections",
+    key: 'removeDirections',
     value: function removeDirections(idx) {
-      var directions = document.getElementById(this.props.id + "-directions-" + idx);
+      var directions = document.getElementById(this.props.id + '-directions-' + idx);
       directions.classList.add("hidden");
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this2 = this;
 
       var originLIs = this.props.summary.trips.map(function (trip, idx) {
         var stepsLIs = trip.steps.map(function (step, jdx) {
           return _react2.default.createElement(
-            "li",
-            { key: jdx, className: "trip-summary-directions-steps" },
+            'li',
+            { key: jdx, className: 'trip-summary-directions-steps' },
             step.instructions
           );
         });
         return _react2.default.createElement(
-          "li",
+          'li',
           { onMouseOver: function onMouseOver() {
               _this2.renderDirections(idx);
             }, onMouseOut: function onMouseOut() {
               _this2.removeDirections(idx);
-            }, key: idx, className: "trip-summary-origin" },
-          trip.origin,
+            }, key: idx, className: 'trip-summary-origin' },
           _react2.default.createElement(
-            "div",
-            { className: "trip-summary-directions hidden", id: _this2.props.id + "-directions-" + idx },
+            'h3',
+            { className: 'trip-summary-origin-header' },
+            trip.origin
+          ),
+          _react2.default.createElement(
+            'h4',
+            { className: 'trip-summary-origin-time' },
+            (0, _time_conversion.timeConversion)(trip.timeValue)
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'trip-summary-directions hidden', id: _this2.props.id + '-directions-' + idx },
             _react2.default.createElement(
-              "ul",
+              'ul',
               { style: { margin: "5px" } },
               stepsLIs
             )
@@ -19289,15 +19312,15 @@ var TripSummary = function (_React$Component) {
       });
 
       return _react2.default.createElement(
-        "div",
-        { id: this.props.id, className: "trip-summary hidden" },
+        'div',
+        { id: this.props.id, className: 'trip-summary hidden' },
         _react2.default.createElement(
-          "h1",
+          'h1',
           { style: { textSize: "14px", margin: "6px" } },
-          "Coming from..."
+          'Coming from...'
         ),
         _react2.default.createElement(
-          "ul",
+          'ul',
           null,
           originLIs
         )
@@ -19309,6 +19332,96 @@ var TripSummary = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = TripSummary;
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var timeConversion = exports.timeConversion = function timeConversion(value) {
+  var minutes = Math.round(value / 60);
+  var seconds = value % 60;
+  return minutes + " minutes and " + seconds + " seconds";
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Midpoint = function (_React$Component) {
+  _inherits(Midpoint, _React$Component);
+
+  function Midpoint(props) {
+    _classCallCheck(this, Midpoint);
+
+    var _this = _possibleConstructorReturn(this, (Midpoint.__proto__ || Object.getPrototypeOf(Midpoint)).call(this, props));
+
+    _this.midpoint = null;
+
+    _this.getMidpoint = _this.getMidpoint.bind(_this);
+    return _this;
+  }
+
+  _createClass(Midpoint, [{
+    key: 'getMidpoint',
+    value: function getMidpoint() {
+      if (this.midpoint) this.midpoint.setMap(null);
+      var map = this.props.map;
+      var lats = [];
+      var longs = [];
+      this.props.markers.forEach(function (marker) {
+        lats.push(marker.marker.position.lat());
+        longs.push(marker.marker.position.lng());
+      });
+      var avgLat = lats.reduce(function (a, b) {
+        return a + b;
+      }, 0) / lats.length;
+      var avgLong = longs.reduce(function (a, b) {
+        return a + b;
+      }, 0) / longs.length;
+      this.midpoint = new google.maps.Marker({
+        map: map,
+        position: { lat: avgLat, lng: avgLong },
+        icon: 'markers/blue_MarkerM.png'
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint });
+    }
+  }]);
+
+  return Midpoint;
+}(_react2.default.Component);
+
+exports.default = Midpoint;
 
 /***/ })
 /******/ ]);

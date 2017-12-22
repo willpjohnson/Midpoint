@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { timeConversion } from '../javascripts/time_conversion';
+
 import Loader from './loader';
 import TripSummary from './trip_summary';
 
@@ -20,12 +22,6 @@ class MostConvenient extends React.Component {
     this.removeTripSummary = this.removeTripSummary.bind(this);
 
     this.allRoutes = [];
-  }
-
-  timeConversion(value) {
-    let minutes = Math.round(value / 60);
-    let seconds = value % 60;
-    return `${minutes} minutes and ${seconds} seconds`;
   }
 
   getMostConvenient() {
@@ -119,7 +115,7 @@ class MostConvenient extends React.Component {
       return(
         <li onClick={() => this.displayDirections(tripSummary)} onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
           <h3 className="most-convenient-location-header">{tripSummary.destination}</h3>
-          <h4 className="most-convenient-location-time">{this.timeConversion(tripSummary.totalTime)}</h4>
+          <h4 className="most-convenient-location-time">{timeConversion(tripSummary.totalTime)}</h4>
           <TripSummary id={`trip-summary-${idx}`} summary={tripSummary}/>
         </li>
       )
@@ -127,7 +123,6 @@ class MostConvenient extends React.Component {
     const body = this.state.loaded ? (<ul>{totalTimesLIs}</ul>) : (<Loader />)
     return(
       <div id="most-convenient-div">
-        <h2 style={{fontWeight: 400, fontSize: 20}}>Most Convenient</h2>
         <input className="button" id="submit" type="button" value="Find" onClick={this.getMostConvenient}></input>
         <div id="most-convenient-directions">
           {body}
