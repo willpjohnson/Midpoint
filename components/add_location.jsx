@@ -52,7 +52,7 @@ class AddLocation extends React.Component {
   createMarker(position, map, title, address, city) {
     const markers = this.props.markers;
     const deletedMarkers = this.props.deletedMarkers;
-    let marker = new google.maps.Marker({map, position, icon: "markers/default.png"});
+    let marker = new google.maps.Marker({map, position});
     const id = markers.length + deletedMarkers.length;
     marker.metadata = {id}
     markers.push({marker, address, city, title, lat: position.lat(), lng: position.lng()});

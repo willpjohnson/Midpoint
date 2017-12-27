@@ -40,7 +40,7 @@ class Rightbar extends React.Component {
       featureHeader = "Midpoint";
     } else if (feature === 'most_convenient') {
       featureElement = <MostConvenient map={this.props.map} markers={this.props.markers}/>;
-      featureHeader = "Most Convenient Location";
+      featureHeader = "Most Convenient";
     }
 
     return(

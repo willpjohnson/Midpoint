@@ -1,0 +1,26 @@
+#midpoint-div {
+  margin-top: 30px;
+}
+
+#midpoint-description-div {
+  margin: 0 auto;
+  margin-top: 15px;
+  width: 85%;
+  min-height: 20px;
+  border: 1px solid #262e35;
+  border-radius: 2px;
+  background-color: white;
+}
+
+.midpoint-address-header {
+  font-size: 18px;
+  padding-top: 6px;
+}
+
+.midpoint-address-street {
+  padding-top: 6px;
+}
+
+.midpoint-address-area {
+  padding-bottom: 6px;
+}

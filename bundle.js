@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,9 +71,9 @@
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(15);
-} else {
   module.exports = __webpack_require__(16);
+} else {
+  module.exports = __webpack_require__(17);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -577,7 +577,7 @@ module.exports = warning;
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(5);
   var warning = __webpack_require__(6);
-  var ReactPropTypesSecret = __webpack_require__(17);
+  var ReactPropTypesSecret = __webpack_require__(18);
   var loggedTypeFailures = {};
 }
 
@@ -876,7 +876,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(20);
+var isTextNode = __webpack_require__(21);
 
 /*eslint-disable no-bitwise */
 
@@ -940,15 +940,31 @@ module.exports = focusNode;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var timeConversion = exports.timeConversion = function timeConversion(value) {
+  var minutes = Math.round(value / 60);
+  var seconds = value % 60;
+  return minutes + " minutes and " + seconds + " seconds";
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(18);
+var _reactDom = __webpack_require__(19);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _root = __webpack_require__(27);
+var _root = __webpack_require__(28);
 
 var _root2 = _interopRequireDefault(_root);
 
@@ -960,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -989,7 +1005,7 @@ version:"16.1.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurren
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2340,7 +2356,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2359,7 +2375,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2397,15 +2413,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(19);
+  module.exports = __webpack_require__(20);
 } else {
-  module.exports = __webpack_require__(22);
+  module.exports = __webpack_require__(23);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2639,7 +2655,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:qb,bundleType:0,version:"16.1.1",r
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2654,7 +2670,7 @@ Z.injectIntoDevTools({findFiberByHostInstance:qb,bundleType:0,version:"16.1.1",r
  * @typechecks
  */
 
-var isNode = __webpack_require__(21);
+var isNode = __webpack_require__(22);
 
 /**
  * @param {*} object The object to check.
@@ -2667,7 +2683,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2695,7 +2711,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2727,8 +2743,8 @@ var containsNode = __webpack_require__(12);
 var focusNode = __webpack_require__(13);
 var emptyObject = __webpack_require__(4);
 var checkPropTypes = __webpack_require__(7);
-var hyphenateStyleName = __webpack_require__(23);
-var camelizeStyleName = __webpack_require__(25);
+var hyphenateStyleName = __webpack_require__(24);
+var camelizeStyleName = __webpack_require__(26);
 
 /**
  * WARNING: DO NOT manually require this module.
@@ -18103,7 +18119,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18118,7 +18134,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(24);
+var hyphenate = __webpack_require__(25);
 
 var msPattern = /^ms-/;
 
@@ -18145,7 +18161,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18181,7 +18197,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18196,7 +18212,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(26);
+var camelize = __webpack_require__(27);
 
 var msPattern = /^-ms-/;
 
@@ -18224,7 +18240,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18259,7 +18275,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18275,13 +18291,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _map_style = __webpack_require__(28);
+var _map_style = __webpack_require__(29);
 
-var _leftbar = __webpack_require__(29);
+var _leftbar = __webpack_require__(30);
 
 var _leftbar2 = _interopRequireDefault(_leftbar);
 
-var _rightbar = __webpack_require__(32);
+var _rightbar = __webpack_require__(33);
 
 var _rightbar2 = _interopRequireDefault(_rightbar);
 
@@ -18335,7 +18351,7 @@ exports.default = Root;
 // center: {lat: 40.6959498, lng: -73.963771},
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18455,7 +18471,7 @@ var mapStyle = exports.mapStyle = {
 };
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18471,7 +18487,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _add_location = __webpack_require__(30);
+var _add_location = __webpack_require__(31);
 
 var _add_location2 = _interopRequireDefault(_add_location);
 
@@ -18509,7 +18525,7 @@ var Leftbar = function (_React$Component) {
 exports.default = Leftbar;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18525,7 +18541,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _test_locations = __webpack_require__(31);
+var _test_locations = __webpack_require__(32);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18603,7 +18619,7 @@ var AddLocation = function (_React$Component) {
     value: function createMarker(position, map, title, address, city) {
       var markers = this.props.markers;
       var deletedMarkers = this.props.deletedMarkers;
-      var marker = new google.maps.Marker({ map: map, position: position, icon: "markers/default.png" });
+      var marker = new google.maps.Marker({ map: map, position: position });
       var id = markers.length + deletedMarkers.length;
       marker.metadata = { id: id };
       markers.push({ marker: marker, address: address, city: city, title: title, lat: position.lat(), lng: position.lng() });
@@ -18674,7 +18690,7 @@ var AddLocation = function (_React$Component) {
 exports.default = AddLocation;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18683,16 +18699,14 @@ exports.default = AddLocation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-// const testLocations = [
-//   {address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza"},
-//   {address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza"},
-//   {address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's"},
-//   {address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza"},
-//   {address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza"},
-//   {address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village"}
-// ]
+var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
 
-var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn, NY", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
+// const testLocations = [
+//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
+//   {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
+//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
+//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
+// ]
 
 var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
   var size = testLocations.length;
@@ -18706,7 +18720,7 @@ var threeRandomLocations = exports.threeRandomLocations = function threeRandomLo
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18722,11 +18736,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _best_subway = __webpack_require__(33);
+var _best_subway = __webpack_require__(34);
 
 var _best_subway2 = _interopRequireDefault(_best_subway);
 
-var _most_convenient = __webpack_require__(35);
+var _most_convenient = __webpack_require__(36);
 
 var _most_convenient2 = _interopRequireDefault(_most_convenient);
 
@@ -18784,7 +18798,7 @@ var Rightbar = function (_React$Component) {
         featureHeader = "Midpoint";
       } else if (feature === 'most_convenient') {
         featureElement = _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers });
-        featureHeader = "Most Convenient Location";
+        featureHeader = "Most Convenient";
       }
 
       return _react2.default.createElement(
@@ -18812,7 +18826,7 @@ var Rightbar = function (_React$Component) {
 exports.default = Rightbar;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18828,7 +18842,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _subway_stops = __webpack_require__(34);
+var _subway_stops = __webpack_require__(35);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18893,7 +18907,7 @@ var BestSubway = function (_React$Component) {
 exports.default = BestSubway;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18905,7 +18919,7 @@ Object.defineProperty(exports, "__esModule", {
 var brooklyn = exports.brooklyn = [{ lat: 40.7081258, lng: -73.9407309, name: "Bedford" }, { lat: 40.7081258, lng: -73.9407309, name: "Lorimer" }, { lat: 40.7081258, lng: -73.9407309, name: "Graham" }, { lat: 40.7105047, lng: -73.9394737, name: "Grand" }, { lat: 40.7105047, lng: -73.9394737, name: "Montrose" }, { lat: 40.7059709, lng: -73.9363043, name: "Morgan" }, { lat: 40.7059709, lng: -73.9363043, name: "Jefferson" }, { lat: 40.7059709, lng: -73.9363043, name: "Dekalb" }, { lat: 40.7059709, lng: -73.9363043, name: "Myrtle Wyckoff" }];
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18921,13 +18935,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _time_conversion = __webpack_require__(38);
+var _time_conversion = __webpack_require__(14);
 
-var _loader = __webpack_require__(36);
+var _loader = __webpack_require__(37);
 
 var _loader2 = _interopRequireDefault(_loader);
 
-var _trip_summary = __webpack_require__(37);
+var _trip_summary = __webpack_require__(38);
 
 var _trip_summary2 = _interopRequireDefault(_trip_summary);
 
@@ -19107,7 +19121,7 @@ var MostConvenient = function (_React$Component) {
 exports.default = MostConvenient;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19218,7 +19232,7 @@ var Loader = function (_React$Component) {
 exports.default = Loader;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19234,7 +19248,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _time_conversion = __webpack_require__(38);
+var _time_conversion = __webpack_require__(14);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19334,22 +19348,6 @@ var TripSummary = function (_React$Component) {
 exports.default = TripSummary;
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var timeConversion = exports.timeConversion = function timeConversion(value) {
-  var minutes = Math.round(value / 60);
-  var seconds = value % 60;
-  return minutes + " minutes and " + seconds + " seconds";
-};
-
-/***/ }),
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19382,16 +19380,17 @@ var Midpoint = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Midpoint.__proto__ || Object.getPrototypeOf(Midpoint)).call(this, props));
 
-    _this.midpoint = null;
+    _this.state = { midpoint: null, address: null };
 
     _this.getMidpoint = _this.getMidpoint.bind(_this);
+    _this.getMidpointAddress = _this.getMidpointAddress.bind(_this);
     return _this;
   }
 
   _createClass(Midpoint, [{
     key: 'getMidpoint',
     value: function getMidpoint() {
-      if (this.midpoint) this.midpoint.setMap(null);
+      if (this.state.midpoint) this.state.midpoint.setMap(null);
       var map = this.props.map;
       var lats = [];
       var longs = [];
@@ -19405,16 +19404,66 @@ var Midpoint = function (_React$Component) {
       var avgLong = longs.reduce(function (a, b) {
         return a + b;
       }, 0) / longs.length;
-      this.midpoint = new google.maps.Marker({
+      var midpoint = new google.maps.Marker({
         map: map,
         position: { lat: avgLat, lng: avgLong },
         icon: 'markers/blue_MarkerM.png'
+      });
+
+      this.setState({ midpoint: midpoint });
+      this.getMidpointAddress(midpoint.position.lat(), midpoint.position.lng());
+    }
+  }, {
+    key: 'getMidpointAddress',
+    value: function getMidpointAddress(lat, lng) {
+      var geocoder = new google.maps.Geocoder();
+      var that = this;
+      geocoder.geocode({ 'location': { lat: lat, lng: lng } }, function (results, status) {
+        if (status === 'OK') {
+          var result = results[0].address_components;
+          var street = result[0].long_name + " " + result[1].long_name;
+          var area = result[2].long_name;
+          that.setState({ address: { street: street, area: area } });
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('input', { className: 'button', id: 'midpoint', type: 'button', value: 'Get Midpoint', onClick: this.getMidpoint });
+      var description = void 0;
+      if (this.state.address !== null) {
+        description = _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h3',
+            { className: 'midpoint-address-header' },
+            'Nearest Address'
+          ),
+          _react2.default.createElement(
+            'h4',
+            { className: 'midpoint-address-street' },
+            this.state.address.street
+          ),
+          _react2.default.createElement(
+            'h4',
+            { className: 'midpoint-address-area' },
+            this.state.address.area
+          )
+        );
+      }
+      return _react2.default.createElement(
+        'div',
+        { id: 'midpoint-div' },
+        _react2.default.createElement('input', { className: 'button', id: 'midpoint-button', type: 'button', value: 'Find', onClick: this.getMidpoint }),
+        _react2.default.createElement(
+          'div',
+          { id: 'midpoint-description-div' },
+          description
+        )
+      );
     }
   }]);
 
