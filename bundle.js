@@ -18699,14 +18699,16 @@ exports.default = AddLocation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
-
 // const testLocations = [
-//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
-//   {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
-//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
-//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
+//   {address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza"},
+//   {address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza"},
+//   {address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's"},
+//   {address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza"},
+//   {address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza"},
+//   {address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village"}
 // ]
+
+var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn, NY", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
 
 var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
   var size = testLocations.length;
@@ -18777,7 +18779,6 @@ var Rightbar = function (_React$Component) {
       var features = this.state.features;
       var cycledFeatures = features.slice(1).concat(features[0]);
       this.setState({ features: cycledFeatures });
-      console.log(this.state.features);
     }
   }, {
     key: 'cycleRight',
@@ -18785,7 +18786,6 @@ var Rightbar = function (_React$Component) {
       var features = this.state.features;
       var cycledFeatures = [features[features.length - 1]].concat(features.slice(0, features.length - 1));
       this.setState({ features: cycledFeatures });
-      console.log(this.state.features);
     }
   }, {
     key: 'render',
@@ -18799,6 +18799,9 @@ var Rightbar = function (_React$Component) {
       } else if (feature === 'most_convenient') {
         featureElement = _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers });
         featureHeader = "Most Convenient";
+      } else if (feature === 'best_subway') {
+        featureElement = _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers });
+        featureHeader = "Best Subway";
       }
 
       return _react2.default.createElement(
@@ -18860,44 +18863,58 @@ var BestSubway = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (BestSubway.__proto__ || Object.getPrototypeOf(BestSubway)).call(this, props));
 
+    _this.allRoutes = [];
+
     _this.calculateBestSubway = _this.calculateBestSubway.bind(_this);
+    _this.routeLocation = _this.routeLocation.bind(_this);
     return _this;
   }
 
   _createClass(BestSubway, [{
     key: 'calculateBestSubway',
     value: function calculateBestSubway() {
-      // const directionsDisplay = new google.maps.DirectionsRenderer;
-      // const directionsService = new google.maps.DirectionsService;
-      // directionsDisplay.setMap(this.props.map);
-      //
-      // brooklyn.forEach( (stop) => {
-      //   let transitTimes = [];
-      //   this.props.markers.forEach( (marker) => {
-      //     directionsService.route({
-      //       origin: {lat: marker.lat, lng: marker.lng},
-      //       destination: {lat: stop.lat, lng: stop.lng},
-      //       travelMode: 'TRANSIT'
-      //     }, function(response, status) {
-      //       if (status === 'OK') {
-      //         let bestRoute = response.routes[0].legs[0];
-      //         let timeValue = bestRoute.duration.value;
-      //         console.log(stop.name);
-      //         console.log(marker.title);
-      //         console.log(timeValue);
-      //         transitTimes.push({origin: marker.title, destination: stop.name, timeValue: timeValue})
-      //       } else {
-      //         // window.alert('Directions request failed due to ' + status);
-      //       }
-      //     })
-      //   })
-      //   console.log(transitTimes);
-      // })
+      var _this2 = this;
+
+      var directionsService = new google.maps.DirectionsService();
+      var stops = _subway_stops.trainL.concat(_subway_stops.trainG);
+      var size = this.props.markers.length * stops.length;
+      this.props.markers.forEach(function (marker) {
+        stops.forEach(function (stop) {
+          _this2.routeLocation(directionsService, marker, stop, size);
+        });
+      });
+    }
+  }, {
+    key: 'routeLocation',
+    value: function routeLocation(directionsService, origin, destination, size) {
+      var routeLocation = this.routeLocation;
+      var allRoutes = this.allRoutes;
+      directionsService.route({
+        origin: { lat: origin.lat, lng: origin.lng },
+        destination: { lat: destination.lat, lng: destination.lng },
+        travelMode: 'TRANSIT'
+      }, function (response, status) {
+        if (status === "OK") {
+          // let route = response.routes[0].legs[0];
+          allRoutes.push(response);
+          // allRoutes.push({displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps});
+          if (allRoutes.length === size) console.log(allRoutes);;
+        } else if (status === "OVER_QUERY_LIMIT") {
+          setTimeout(function () {
+            routeLocation(directionsService, origin, destination, size);
+          }, 200);
+        }
+      });
     }
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('div', { onClick: this.calculateBestSubway });
+      return _react2.default.createElement(
+        'div',
+        { id: 'best-subway-div' },
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.calculateBestSubway }),
+        _react2.default.createElement('div', { id: 'best-subway-results' })
+      );
     }
   }]);
 
@@ -18916,7 +18933,9 @@ exports.default = BestSubway;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var brooklyn = exports.brooklyn = [{ lat: 40.7081258, lng: -73.9407309, name: "Bedford" }, { lat: 40.7081258, lng: -73.9407309, name: "Lorimer" }, { lat: 40.7081258, lng: -73.9407309, name: "Graham" }, { lat: 40.7105047, lng: -73.9394737, name: "Grand" }, { lat: 40.7105047, lng: -73.9394737, name: "Montrose" }, { lat: 40.7059709, lng: -73.9363043, name: "Morgan" }, { lat: 40.7059709, lng: -73.9363043, name: "Jefferson" }, { lat: 40.7059709, lng: -73.9363043, name: "Dekalb" }, { lat: 40.7059709, lng: -73.9363043, name: "Myrtle Wyckoff" }];
+var trainL = exports.trainL = [{ lat: 40.739771, lng: -74.002797, name: "Eighth Avenue" }, { lat: 40.737544, lng: -73.996982, name: "Sixth Avenue" }, { lat: 40.731414, lng: -73.982165, name: "Union Square" }, { lat: 40.731414, lng: -73.982165, name: "Third Avenue" }, { lat: 40.731414, lng: -73.982165, name: "First Avenue" }, { lat: 40.717835, lng: -73.957524, name: "Bedford Avenue" }, { lat: 40.713754, lng: -73.951763, name: "Lorimer Street" }, { lat: 40.714558, lng: -73.944206, name: "Graham Avenue" }, { lat: 40.711927, lng: -73.940438, name: "Grand Street" }, { lat: 40.707739, lng: -73.939848, name: "Montrose Avenue" }, { lat: 40.706091, lng: -73.933694, name: "Morgan Avenue" }, { lat: 40.706311, lng: -73.922079, name: "Jefferson Street" }, { lat: 40.703814, lng: -73.918442, name: "Dekalb Avenue" }, { lat: 40.699844, lng: -73.911576, name: "Myrtle-Wyckoff Avenues" }, { lat: 40.695949, lng: -73.905120, name: "Halsey Street" }, { lat: 40.688778, lng: -73.904044, name: "Wilson Avenue" }, { lat: 40.682326, lng: -73.905117, name: "Bushwick Avenue-Aberdeen Street" }, { lat: 40.678688, lng: -73.903838, name: "Broadway Junction" }, { lat: 40.675340, lng: -73.903125, name: "Atlantic Avenue" }, { lat: 40.669389, lng: -73.901994, name: "Sutter Avenue" }, { lat: 40.664044, lng: -73.900566, name: "Livonia Avenue" }, { lat: 40.658905, lng: -73.899240, name: "New Lots Avenue" }, { lat: 40.651359, lng: -73.899059, name: "East 105th St" }, { lat: 40.646589, lng: -73.902004, name: "Canarsie-Rockaway Parkway" }];
+
+var trainG = exports.trainG = [{ lat: 40.746561, lng: -73.943832, name: "Court Square" }, { lat: 40.744723, lng: -73.948683, name: "21st Street" }, { lat: 40.730158, lng: -73.954060, name: "Greenpoint Avenue" }, { lat: 40.724617, lng: -73.951275, name: "Nassau Avenue" }, { lat: 40.713772, lng: -73.951748, name: "Metropolitan Avenue" }, { lat: 40.705669, lng: -73.950038, name: "Broadway" }, { lat: 40.699942, lng: -73.949927, name: "Flushing Avenue" }, { lat: 40.695528, lng: -73.948985, name: "Myrtlelng: -Willoughby Avenues" }, { lat: 40.690023, lng: -73.951548, name: "Bedfordlng: -Nostrand Avenues" }, { lat: 40.688922, lng: -73.960040, name: "Classon Avenue" }, { lat: 40.688167, lng: -73.967552, name: "Clinton–Washington Avenues" }, { lat: 40.687378, lng: -73.974750, name: "Fulton Street" }, { lat: 40.688812, lng: -73.985335, name: "Hoyt–Schermerhorn Streets" }, { lat: 40.686851, lng: -73.990560, name: "Bergen Street" }, { lat: 40.679341, lng: -73.995811, name: "Carroll Street" }, { lat: 40.674604, lng: -73.997043, name: "Smith–Ninth Streets" }, { lat: 40.670512, lng: -73.989938, name: "Fourth Avenue" }, { lat: 40.667021, lng: -73.981403, name: "Seventh Avenue" }, { lat: 40.660701, lng: -73.979517, name: "15th Street–Prospect Park" }, { lat: 40.649729, lng: -73.975807, name: "Fort Hamilton Parkway" }, { lat: 40.643211, lng: -73.979364, name: "Church Avenue" }];
 
 /***/ }),
 /* 36 */

@@ -1,45 +1,56 @@
 import React from 'react';
-import { brooklyn } from '../javascripts/subway_stops';
+import { trainL, trainG } from '../javascripts/subway_stops';
 
 class BestSubway extends React.Component {
   constructor(props) {
     super(props);
 
+    this.allRoutes = [];
+
     this.calculateBestSubway = this.calculateBestSubway.bind(this);
+    this.routeLocation = this.routeLocation.bind(this);
   }
 
   calculateBestSubway() {
-    // const directionsDisplay = new google.maps.DirectionsRenderer;
-    // const directionsService = new google.maps.DirectionsService;
-    // directionsDisplay.setMap(this.props.map);
-    //
-    // brooklyn.forEach( (stop) => {
-    //   let transitTimes = [];
-    //   this.props.markers.forEach( (marker) => {
-    //     directionsService.route({
-    //       origin: {lat: marker.lat, lng: marker.lng},
-    //       destination: {lat: stop.lat, lng: stop.lng},
-    //       travelMode: 'TRANSIT'
-    //     }, function(response, status) {
-    //       if (status === 'OK') {
-    //         let bestRoute = response.routes[0].legs[0];
-    //         let timeValue = bestRoute.duration.value;
-    //         console.log(stop.name);
-    //         console.log(marker.title);
-    //         console.log(timeValue);
-    //         transitTimes.push({origin: marker.title, destination: stop.name, timeValue: timeValue})
-    //       } else {
-    //         // window.alert('Directions request failed due to ' + status);
-    //       }
-    //     })
-    //   })
-    //   console.log(transitTimes);
-    // })
+    const directionsService = new google.maps.DirectionsService;
+    const stops = trainL.concat(trainG);
+    const size = this.props.markers.length * stops.length;
+    this.props.markers.forEach( (marker) => {
+      stops.forEach( (stop) => {
+        this.routeLocation(directionsService, marker, stop, size);
+      })
+    })
+  }
+
+  routeLocation(directionsService, origin, destination, size) {
+    const routeLocation = this.routeLocation;
+    const allRoutes = this.allRoutes;
+    directionsService.route({
+      origin: {lat: origin.lat, lng: origin.lng},
+      destination: {lat: destination.lat, lng: destination.lng},
+      travelMode: 'TRANSIT'
+    }, function(response, status) {
+      if (status === "OK") {
+        // let route = response.routes[0].legs[0];
+        allRoutes.push(response);
+        // allRoutes.push({displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps});
+        if (allRoutes.length === size) console.log(allRoutes);;
+      } else if (status === "OVER_QUERY_LIMIT") {
+        setTimeout( () => {
+          routeLocation(directionsService, origin, destination, size)
+        }, 200)
+      }
+    })
   }
 
   render() {
     return(
-      <div onClick={this.calculateBestSubway}></div>
+      <div id="best-subway-div">
+        <input className="button" id="submit" type="button" value="Find" onClick={this.calculateBestSubway}></input>
+        <div id="best-subway-results">
+
+        </div>
+      </div>
     )
   }
 }

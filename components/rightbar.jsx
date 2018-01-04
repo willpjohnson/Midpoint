@@ -21,14 +21,12 @@ class Rightbar extends React.Component {
     let features = this.state.features;
     let cycledFeatures = features.slice(1).concat(features[0]);
     this.setState({features: cycledFeatures});
-    console.log(this.state.features);
   }
 
   cycleRight() {
     let features = this.state.features;
     let cycledFeatures = [features[features.length-1]].concat(features.slice(0, features.length-1));
     this.setState({features: cycledFeatures});
-    console.log(this.state.features);
   }
 
   render() {
@@ -41,6 +39,9 @@ class Rightbar extends React.Component {
     } else if (feature === 'most_convenient') {
       featureElement = <MostConvenient map={this.props.map} markers={this.props.markers}/>;
       featureHeader = "Most Convenient";
+    } else if (feature === 'best_subway') {
+      featureElement = <BestSubway map={this.props.map} markers={this.props.markers}/>;
+      featureHeader = "Best Subway"
     }
 
     return(
