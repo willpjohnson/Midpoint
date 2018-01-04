@@ -3,6 +3,7 @@ import React from 'react';
 import { timeConversion } from '../javascripts/time_conversion';
 
 import Loader from './loader';
+import ProgressBar from './progress_bar'
 import TripSummary from './trip_summary';
 
 class MostConvenient extends React.Component {
@@ -111,11 +112,13 @@ class MostConvenient extends React.Component {
   }
 
   render() {
+    const longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
     const totalTimesLIs = this.state.tripSummaries.map( (tripSummary, idx) => {
       return(
         <li onClick={() => this.displayDirections(tripSummary)} onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
           <h3 className="most-convenient-location-header">{tripSummary.destination}</h3>
           <h4 className="most-convenient-location-time">{timeConversion(tripSummary.totalTime)}</h4>
+          <ProgressBar totalTime={tripSummary.totalTime} longestTime={longestTrip.totalTime}/>
           <TripSummary id={`trip-summary-${idx}`} summary={tripSummary}/>
         </li>
       )

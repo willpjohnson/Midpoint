@@ -9,8 +9,8 @@ class Rightbar extends React.Component {
     super(props)
 
     this.state = {features: [
+      "most_convenient",
       "midpoint",
-      "most_convenient"
     ]}
 
     this.cycleLeft = this.cycleLeft.bind(this);

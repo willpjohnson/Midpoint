@@ -18766,7 +18766,7 @@ var Rightbar = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Rightbar.__proto__ || Object.getPrototypeOf(Rightbar)).call(this, props));
 
-    _this.state = { features: ["midpoint", "most_convenient"] };
+    _this.state = { features: ["most_convenient", "midpoint"] };
 
     _this.cycleLeft = _this.cycleLeft.bind(_this);
     _this.cycleRight = _this.cycleRight.bind(_this);
@@ -18960,6 +18960,10 @@ var _loader = __webpack_require__(37);
 
 var _loader2 = _interopRequireDefault(_loader);
 
+var _progress_bar = __webpack_require__(40);
+
+var _progress_bar2 = _interopRequireDefault(_progress_bar);
+
 var _trip_summary = __webpack_require__(38);
 
 var _trip_summary2 = _interopRequireDefault(_trip_summary);
@@ -19093,6 +19097,7 @@ var MostConvenient = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      var longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
       var totalTimesLIs = this.state.tripSummaries.map(function (tripSummary, idx) {
         return _react2.default.createElement(
           'li',
@@ -19113,6 +19118,7 @@ var MostConvenient = function (_React$Component) {
             { className: 'most-convenient-location-time' },
             (0, _time_conversion.timeConversion)(tripSummary.totalTime)
           ),
+          _react2.default.createElement(_progress_bar2.default, { totalTime: tripSummary.totalTime, longestTime: longestTrip.totalTime }),
           _react2.default.createElement(_trip_summary2.default, { id: 'trip-summary-' + idx, summary: tripSummary })
         );
       });
@@ -19490,6 +19496,58 @@ var Midpoint = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Midpoint;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ProgressBar = function (_React$Component) {
+  _inherits(ProgressBar, _React$Component);
+
+  function ProgressBar(props) {
+    _classCallCheck(this, ProgressBar);
+
+    return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
+  }
+
+  _createClass(ProgressBar, [{
+    key: "render",
+    value: function render() {
+      var width = this.props.totalTime / this.props.longestTime * 100;
+      console.log(width);
+      return _react2.default.createElement(
+        "div",
+        { className: "progress-bar" },
+        _react2.default.createElement("div", { className: "progress-bar-filled", style: { width: width + "%" } })
+      );
+    }
+  }]);
+
+  return ProgressBar;
+}(_react2.default.Component);
+
+exports.default = ProgressBar;
 
 /***/ })
 /******/ ]);
