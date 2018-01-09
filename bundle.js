@@ -18505,16 +18505,36 @@ var Leftbar = function (_React$Component) {
   function Leftbar(props) {
     _classCallCheck(this, Leftbar);
 
-    return _possibleConstructorReturn(this, (Leftbar.__proto__ || Object.getPrototypeOf(Leftbar)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Leftbar.__proto__ || Object.getPrototypeOf(Leftbar)).call(this, props));
+
+    _this.recenterMap = _this.recenterMap.bind(_this);
+    return _this;
   }
 
   _createClass(Leftbar, [{
+    key: 'recenterMap',
+    value: function recenterMap(map) {
+      if (this.props.markers.length < 1) return;
+      var lats = [];
+      var lngs = [];
+      this.props.markers.forEach(function (marker) {
+        lats.push(marker.lat);
+        lngs.push(marker.lng);
+      });
+      var sw = new google.maps.LatLng(Math.min.apply(Math, lats), Math.min.apply(Math, lngs));
+      var ne = new google.maps.LatLng(Math.max.apply(Math, lats), Math.max.apply(Math, lngs));
+      var bounds = new google.maps.LatLngBounds(sw, ne);
+      this.props.map.fitBounds(bounds, 30);
+      if (this.props.map.zoom > 15) this.props.map.setZoom(15);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         { id: 'leftbar' },
-        _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers, deletedMarkers: this.props.deletedMarkers })
+        _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers, deletedMarkers: this.props.deletedMarkers }),
+        _react2.default.createElement('input', { className: 'button', type: 'button', value: 'Recenter Map', onClick: this.recenterMap })
       );
     }
   }]);
@@ -18677,7 +18697,6 @@ var AddLocation = function (_React$Component) {
         _react2.default.createElement('br', null),
         _react2.default.createElement('br', null),
         _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add Location', onClick: this.addAddress }),
-        _react2.default.createElement('br', null),
         _react2.default.createElement('br', null),
         _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Add 3 Random Locations', onClick: this.addThreeTestAddresses })
       );

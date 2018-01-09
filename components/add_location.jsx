@@ -94,7 +94,7 @@ class AddLocation extends React.Component {
         <input onChange={this.updateField("address")} className="add-location-input" id="address" type="textbox" value={this.state.address} placeholder="Street Address"></input><br />
         <input onChange={this.updateField("city")} className="add-location-input" id="city" type="textbox" value={this.state.city} placeholder="City"></input><br />
         <input onChange={this.updateField("title")} className="add-location-input" id="title" type="textbox" value={this.state.title} placeholder="Location Name"></input><br /><br />
-        <input className="button" id="submit" type="button" value="Add Location" onClick={this.addAddress}></input><br /><br />
+        <input className="button" id="submit" type="button" value="Add Location" onClick={this.addAddress}></input><br />
         <input className="button" id="submit" type="button" value="Add 3 Random Locations" onClick={this.addThreeTestAddresses}></input>
       </div>
     )
