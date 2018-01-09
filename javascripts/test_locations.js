@@ -9,7 +9,7 @@
 
 const testLocations = [
   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
-  {address: "98 India St", city: "Brooklyn, NY", title: "Conor"},
+  {address: "98 India St", city: "Brooklyn", title: "Conor"},
   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
 ]

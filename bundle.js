@@ -18708,7 +18708,7 @@ Object.defineProperty(exports, "__esModule", {
 //   {address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village"}
 // ]
 
-var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn, NY", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
+var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
 
 var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
   var size = testLocations.length;
@@ -19556,18 +19556,47 @@ var TripDirections = function (_React$Component) {
   function TripDirections(props) {
     _classCallCheck(this, TripDirections);
 
-    return _possibleConstructorReturn(this, (TripDirections.__proto__ || Object.getPrototypeOf(TripDirections)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (TripDirections.__proto__ || Object.getPrototypeOf(TripDirections)).call(this, props));
+
+    _this.parseInstructions = _this.parseInstructions.bind(_this);
+    return _this;
   }
 
   _createClass(TripDirections, [{
+    key: "parseInstructions",
+    value: function parseInstructions(step, idx) {
+      switch (step.travel_mode) {
+        case "TRANSIT":
+          return _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(
+              "li",
+              { className: "trip-directions-step", key: idx },
+              step.instructions + " for " + step.transit.num_stops + " stops on the " + step.transit.line.short_name
+            ),
+            _react2.default.createElement(
+              "li",
+              { className: "trip-directions-step", key: idx + "b" },
+              "Get off at " + step.transit.arrival_stop.name
+            )
+          );
+        default:
+          return _react2.default.createElement(
+            "li",
+            { className: "trip-directions-step", key: idx },
+            step.instructions
+          );
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
+      console.log(this.props.directions);
       var directionLIs = this.props.directions.map(function (step, idx) {
-        return _react2.default.createElement(
-          "li",
-          { className: "trip-directions-step", key: idx },
-          step.instructions
-        );
+        return _this2.parseInstructions(step, idx);
       });
       return _react2.default.createElement(
         "div",
