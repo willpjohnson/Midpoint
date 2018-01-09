@@ -18699,16 +18699,14 @@ exports.default = AddLocation;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-// const testLocations = [
-//   {address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza"},
-//   {address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza"},
-//   {address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's"},
-//   {address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza"},
-//   {address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza"},
-//   {address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village"}
-// ]
+var testLocations = [{ address: "261 Moore St", city: "Brooklyn, NY", title: "Roberta's Pizza" }, { address: "1 Front St", city: "Brooklyn, NY", title: "Grimaldi's Pizza" }, { address: "60 Greenpoint Ave", city: "Brooklyn, NY", title: "Paulie Gee's" }, { address: "1424 Avenue J", city: "Brooklyn, NY", title: "Di Fara Pizza" }, { address: "4514 13th Avenue", city: "Brooklyn, NY", title: "Benny's Famous Pizza" }, { address: "483 5th Avenue", city: "Brooklyn, NY", title: "Joe's Pizza of the Village" }];
 
-var testLocations = [{ address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will" }, { address: "98 India St", city: "Brooklyn", title: "Conor" }, { address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen" }, { address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle" }];
+// const testLocations = [
+//   {address: "370 Cornelia St", city: "Brooklyn, NY", title: "Will"},
+//   {address: "98 India St", city: "Brooklyn", title: "Conor"},
+//   {address: "260 Linden Blvd", city: "Brooklyn, NY", title: "Galen"},
+//   {address: "310 12th St", city: "Brooklyn, NY", title: "Smam/Kyle"}
+// ]
 
 var threeRandomLocations = exports.threeRandomLocations = function threeRandomLocations() {
   var size = testLocations.length;
