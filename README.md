@@ -20,7 +20,7 @@ The first feature of Midpoint is finding the exact geographical midpoint between
 
 ### Most Convenient
 
-"Most Convenient" is for groups of friends looking to congregate at one of the friend's current location. This feature calculates the travel time for every possible trip (where origin and destination are two of the user added locations) and determines which of the locations should be the meeting place based on least total travel time. Users can look through all these calculated trips and view directions and total travel time.
+"Most Convenient" is for groups of friends looking to congregate at one of the friend's current location. This feature calculates the travel time for every possible trip (where origin and destination are two of the user added locations) and determines which of the locations should be the meeting place based on least total travel time. Total travel time for all the locations is represented by a percentage bar representing relative amount of time among the options. Through each of the options, users can select specific trips via origin and destination and view specific instructions below.
 
 ![image of most convenient](images/most_convenient.png)
 
