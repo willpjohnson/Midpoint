@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BestSubway from './best_subway';
-import MostConvenient from './most_convenient';
+import MostConvenient from './most_convenient/most_convenient';
 import Midpoint from './midpoint';
 
 class Rightbar extends React.Component {

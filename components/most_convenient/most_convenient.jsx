@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { timeConversion } from '../javascripts/time_conversion';
+import { timeConversion } from '../../javascripts/time_conversion';
 
-import Loader from './loader';
+import Loader from '../loader';
 import ProgressBar from './progress_bar'
 import TripSummary from './trip_summary';
+import TripDirections from './trip_directions';
 
 class MostConvenient extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class MostConvenient extends React.Component {
 
     this.state = {
       tripSummaries: [],
-      loaded: true
+      loaded: true,
+      selectedDirections: null
     };
 
     this.getMostConvenient = this.getMostConvenient.bind(this);
@@ -21,6 +23,7 @@ class MostConvenient extends React.Component {
     this.displayDirections = this.displayDirections.bind(this);
     this.renderTripSummary = this.renderTripSummary.bind(this);
     this.removeTripSummary = this.removeTripSummary.bind(this);
+    this.selectDirections = this.selectDirections.bind(this);
 
     this.allRoutes = [];
   }
@@ -111,28 +114,35 @@ class MostConvenient extends React.Component {
     tripSummary.classList.add("hidden");
   }
 
+  selectDirections(trip) {
+    this.setState({selectedDirections: trip})
+  }
+
   render() {
     const longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
     const totalTimesLIs = this.state.tripSummaries.map( (tripSummary, idx) => {
       return(
         <li onClick={() => this.displayDirections(tripSummary)} onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
           <h3 className="most-convenient-location-header">{tripSummary.destination}</h3>
-          <h4 className="most-convenient-location-time">{timeConversion(tripSummary.totalTime)}</h4>
           <ProgressBar totalTime={tripSummary.totalTime} longestTime={longestTrip.totalTime}/>
-          <TripSummary id={`trip-summary-${idx}`} summary={tripSummary}/>
+          <TripSummary id={`trip-summary-${idx}`} summary={tripSummary} selectDirections={this.selectDirections}/>
         </li>
       )
     })
     const body = this.state.loaded ? (<ul>{totalTimesLIs}</ul>) : (<Loader />)
+    const tripDirections = this.state.selectedDirections ? <TripDirections directions={this.state.selectedDirections.steps} origin={this.state.selectedDirections.origin} destination={this.state.selectedDirections.destination}/> : null
+
     return(
       <div id="most-convenient-div">
         <input className="button" id="submit" type="button" value="Find" onClick={this.getMostConvenient}></input>
         <div id="most-convenient-directions">
           {body}
         </div>
+        {tripDirections}
       </div>
     )
   }
 }
+
 
 export default MostConvenient;

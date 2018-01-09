@@ -34,7 +34,6 @@ class BestSubway extends React.Component {
         // let route = response.routes[0].legs[0];
         allRoutes.push(response);
         // allRoutes.push({displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps});
-        if (allRoutes.length === size) console.log(allRoutes);;
       } else if (status === "OVER_QUERY_LIMIT") {
         setTimeout( () => {
           routeLocation(directionsService, origin, destination, size)

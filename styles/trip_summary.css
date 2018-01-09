@@ -31,19 +31,3 @@
   font-size: 16px;
   padding-bottom: 6px;
 }
-
-.trip-summary-directions {
-  position: absolute;
-  top: -1px;
-  left: -250px;
-  width: 250px;
-  background-color: white;
-  border: 1px solid #262e35;
-  border-radius: 2px;
-  z-index: 2;
-}
-
-.trip-summary-directions-steps {
-  font-size: 14px;
-  margin: 2px;
-}
