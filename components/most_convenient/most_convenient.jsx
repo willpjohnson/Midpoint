@@ -14,7 +14,8 @@ class MostConvenient extends React.Component {
     this.state = {
       tripSummaries: [],
       loaded: true,
-      selectedDirections: null
+      selectedDirections: null,
+      hoveredMarker: null
     };
 
     this.getMostConvenient = this.getMostConvenient.bind(this);
@@ -93,14 +94,25 @@ class MostConvenient extends React.Component {
     this.setState({tripSummaries, loaded: true});
   }
 
-  renderTripSummary(idx) {
+  renderTripSummary(summary, idx) {
     const tripSummary = document.getElementById(`trip-summary-${idx}`);
     tripSummary.classList.remove("hidden");
+
+    let marker = this.props.markers[summary.destinationID];
+    const hoveredMarker = new google.maps.Marker({
+      map: this.props.map,
+      position: {lat: marker.lat, lng: marker.lng},
+      icon: 'custom_markers/hovered_marker.png'
+    });
+    this.setState({hoveredMarker})
   }
 
-  removeTripSummary(idx) {
+  removeTripSummary(summary, idx) {
     const tripSummary = document.getElementById(`trip-summary-${idx}`);
     tripSummary.classList.add("hidden");
+
+    this.state.hoveredMarker.setMap(null);
+    this.setState({hoveredMarker: null})
   }
 
   selectDirections(trip) {
@@ -111,7 +123,7 @@ class MostConvenient extends React.Component {
     const longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
     const totalTimesLIs = this.state.tripSummaries.map( (tripSummary, idx) => {
       return(
-        <li onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
+        <li onMouseOver={() => {this.renderTripSummary(tripSummary, idx)}} onMouseOut={() => {this.removeTripSummary(tripSummary, idx)}} className="most-convenient-location" key={idx}>
           <h3 className="most-convenient-location-header">{tripSummary.destination}</h3>
           <ProgressBar totalTime={tripSummary.totalTime} longestTime={longestTrip.totalTime}/>
           <TripSummary id={`trip-summary-${idx}`} summary={tripSummary} displayedDirections={this.props.displayedDirections} map={this.props.map} selectedDirections={this.props.selectedDirections}/>

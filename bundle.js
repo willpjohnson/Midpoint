@@ -18633,6 +18633,7 @@ var AddLocation = function (_React$Component) {
       var info = { map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title };
       this.geocoder.geocode({ 'address': info.address + " " + info.city }, function (results, status) {
         if (status === 'OK') {
+          console.log(results);
           var position = results[0].geometry.location;
           createMarker(position, info.map, info.title, info.address, info.city);
         } else {
@@ -19033,7 +19034,8 @@ var MostConvenient = function (_React$Component) {
     _this.state = {
       tripSummaries: [],
       loaded: true,
-      selectedDirections: null
+      selectedDirections: null,
+      hoveredMarker: null
     };
 
     _this.getMostConvenient = _this.getMostConvenient.bind(_this);
@@ -19118,15 +19120,26 @@ var MostConvenient = function (_React$Component) {
     }
   }, {
     key: 'renderTripSummary',
-    value: function renderTripSummary(idx) {
+    value: function renderTripSummary(summary, idx) {
       var tripSummary = document.getElementById('trip-summary-' + idx);
       tripSummary.classList.remove("hidden");
+
+      var marker = this.props.markers[summary.destinationID];
+      var hoveredMarker = new google.maps.Marker({
+        map: this.props.map,
+        position: { lat: marker.lat, lng: marker.lng },
+        icon: 'custom_markers/hovered_marker.png'
+      });
+      this.setState({ hoveredMarker: hoveredMarker });
     }
   }, {
     key: 'removeTripSummary',
-    value: function removeTripSummary(idx) {
+    value: function removeTripSummary(summary, idx) {
       var tripSummary = document.getElementById('trip-summary-' + idx);
       tripSummary.classList.add("hidden");
+
+      this.state.hoveredMarker.setMap(null);
+      this.setState({ hoveredMarker: null });
     }
   }, {
     key: 'selectDirections',
@@ -19143,9 +19156,9 @@ var MostConvenient = function (_React$Component) {
         return _react2.default.createElement(
           'li',
           { onMouseOver: function onMouseOver() {
-              _this2.renderTripSummary(idx);
+              _this2.renderTripSummary(tripSummary, idx);
             }, onMouseOut: function onMouseOut() {
-              _this2.removeTripSummary(idx);
+              _this2.removeTripSummary(tripSummary, idx);
             }, className: 'most-convenient-location', key: idx },
           _react2.default.createElement(
             'h3',

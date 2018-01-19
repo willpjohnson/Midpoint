@@ -25,6 +25,7 @@ class AddLocation extends React.Component {
     const info = {map: this.props.map, markers: this.props.markers, address: this.state.address, city: this.state.city, title: this.state.title};
     this.geocoder.geocode({'address': info.address + " " + info.city}, function(results, status) {
       if (status === 'OK') {
+        console.log(results);
         let position = results[0].geometry.location;
         createMarker(position, info.map, info.title, info.address, info.city);
       } else {
