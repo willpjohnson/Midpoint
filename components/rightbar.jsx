@@ -34,13 +34,13 @@ class Rightbar extends React.Component {
     let featureElement;
     let featureHeader;
     if (feature === 'midpoint') {
-      featureElement = <Midpoint map={this.props.map} markers={this.props.markers}/>;
+      featureElement = <Midpoint map={this.props.map} markers={this.props.markers} displayedDirections={this.props.displayedDirections}/>;
       featureHeader = "Midpoint";
     } else if (feature === 'most_convenient') {
-      featureElement = <MostConvenient map={this.props.map} markers={this.props.markers}/>;
+      featureElement = <MostConvenient map={this.props.map} markers={this.props.markers} displayedDirections={this.props.displayedDirections}/>;
       featureHeader = "Most Convenient";
     } else if (feature === 'best_subway') {
-      featureElement = <BestSubway map={this.props.map} markers={this.props.markers}/>;
+      featureElement = <BestSubway map={this.props.map} markers={this.props.markers} displayedDirections={this.props.displayedDirections}/>;
       featureHeader = "Best Subway"
     }
 

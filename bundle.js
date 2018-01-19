@@ -943,10 +943,17 @@ module.exports = focusNode;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var timeConversion = exports.timeConversion = function timeConversion(value) {
+var timeConversionWithSeconds = exports.timeConversionWithSeconds = function timeConversionWithSeconds(value) {
   var minutes = Math.round(value / 60);
   var seconds = value % 60;
   return minutes + " minutes and " + seconds + " seconds";
+};
+
+var timeConversion = exports.timeConversion = function timeConversion(value) {
+  var minutes = Math.round(value / 60);
+  var seconds = value % 60;
+  if (seconds >= 30) minutes += 1;
+  return minutes + " minutes";
 };
 
 /***/ }),
@@ -18320,6 +18327,7 @@ var Root = function (_React$Component) {
     _this.map = null;
     _this.markers = [];
     _this.deletedMarkers = [];
+    _this.displayedDirections = [];
     return _this;
   }
 
@@ -18335,8 +18343,8 @@ var Root = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_leftbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers }),
-        _react2.default.createElement(_rightbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers }),
+        _react2.default.createElement(_leftbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers, displayedDirections: this.displayedDirections }),
+        _react2.default.createElement(_rightbar2.default, { map: this.map, markers: this.markers, deletedMarkers: this.deletedMarkers, displayedDirections: this.displayedDirections }),
         _react2.default.createElement('div', { id: 'map' })
       );
     }
@@ -18759,11 +18767,11 @@ var _best_subway = __webpack_require__(34);
 
 var _best_subway2 = _interopRequireDefault(_best_subway);
 
-var _most_convenient = __webpack_require__(41);
+var _most_convenient = __webpack_require__(36);
 
 var _most_convenient2 = _interopRequireDefault(_most_convenient);
 
-var _midpoint = __webpack_require__(39);
+var _midpoint = __webpack_require__(41);
 
 var _midpoint2 = _interopRequireDefault(_midpoint);
 
@@ -18811,13 +18819,13 @@ var Rightbar = function (_React$Component) {
       var featureElement = void 0;
       var featureHeader = void 0;
       if (feature === 'midpoint') {
-        featureElement = _react2.default.createElement(_midpoint2.default, { map: this.props.map, markers: this.props.markers });
+        featureElement = _react2.default.createElement(_midpoint2.default, { map: this.props.map, markers: this.props.markers, displayedDirections: this.props.displayedDirections });
         featureHeader = "Midpoint";
       } else if (feature === 'most_convenient') {
-        featureElement = _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers });
+        featureElement = _react2.default.createElement(_most_convenient2.default, { map: this.props.map, markers: this.props.markers, displayedDirections: this.props.displayedDirections });
         featureHeader = "Most Convenient";
       } else if (feature === 'best_subway') {
-        featureElement = _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers });
+        featureElement = _react2.default.createElement(_best_subway2.default, { map: this.props.map, markers: this.props.markers, displayedDirections: this.props.displayedDirections });
         featureHeader = "Best Subway";
       }
 
@@ -18954,7 +18962,213 @@ var trainL = exports.trainL = [{ lat: 40.739771, lng: -74.002797, name: "Eighth 
 var trainG = exports.trainG = [{ lat: 40.746561, lng: -73.943832, name: "Court Square" }, { lat: 40.744723, lng: -73.948683, name: "21st Street" }, { lat: 40.730158, lng: -73.954060, name: "Greenpoint Avenue" }, { lat: 40.724617, lng: -73.951275, name: "Nassau Avenue" }, { lat: 40.713772, lng: -73.951748, name: "Metropolitan Avenue" }, { lat: 40.705669, lng: -73.950038, name: "Broadway" }, { lat: 40.699942, lng: -73.949927, name: "Flushing Avenue" }, { lat: 40.695528, lng: -73.948985, name: "Myrtlelng: -Willoughby Avenues" }, { lat: 40.690023, lng: -73.951548, name: "Bedfordlng: -Nostrand Avenues" }, { lat: 40.688922, lng: -73.960040, name: "Classon Avenue" }, { lat: 40.688167, lng: -73.967552, name: "Clinton–Washington Avenues" }, { lat: 40.687378, lng: -73.974750, name: "Fulton Street" }, { lat: 40.688812, lng: -73.985335, name: "Hoyt–Schermerhorn Streets" }, { lat: 40.686851, lng: -73.990560, name: "Bergen Street" }, { lat: 40.679341, lng: -73.995811, name: "Carroll Street" }, { lat: 40.674604, lng: -73.997043, name: "Smith–Ninth Streets" }, { lat: 40.670512, lng: -73.989938, name: "Fourth Avenue" }, { lat: 40.667021, lng: -73.981403, name: "Seventh Avenue" }, { lat: 40.660701, lng: -73.979517, name: "15th Street–Prospect Park" }, { lat: 40.649729, lng: -73.975807, name: "Fort Hamilton Parkway" }, { lat: 40.643211, lng: -73.979364, name: "Church Avenue" }];
 
 /***/ }),
-/* 36 */,
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _time_conversion = __webpack_require__(14);
+
+var _loader = __webpack_require__(37);
+
+var _loader2 = _interopRequireDefault(_loader);
+
+var _progress_bar = __webpack_require__(38);
+
+var _progress_bar2 = _interopRequireDefault(_progress_bar);
+
+var _trip_summary = __webpack_require__(39);
+
+var _trip_summary2 = _interopRequireDefault(_trip_summary);
+
+var _trip_directions = __webpack_require__(40);
+
+var _trip_directions2 = _interopRequireDefault(_trip_directions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MostConvenient = function (_React$Component) {
+  _inherits(MostConvenient, _React$Component);
+
+  function MostConvenient(props) {
+    _classCallCheck(this, MostConvenient);
+
+    var _this = _possibleConstructorReturn(this, (MostConvenient.__proto__ || Object.getPrototypeOf(MostConvenient)).call(this, props));
+
+    _this.state = {
+      tripSummaries: [],
+      loaded: true,
+      selectedDirections: null
+    };
+
+    _this.getMostConvenient = _this.getMostConvenient.bind(_this);
+    _this.assessAllTrips = _this.assessAllTrips.bind(_this);
+    _this.routeLocation = _this.routeLocation.bind(_this);
+    _this.renderTripSummary = _this.renderTripSummary.bind(_this);
+    _this.removeTripSummary = _this.removeTripSummary.bind(_this);
+    _this.selectDirections = _this.selectDirections.bind(_this);
+
+    _this.allRoutes = [];
+    return _this;
+  }
+
+  _createClass(MostConvenient, [{
+    key: 'getMostConvenient',
+    value: function getMostConvenient() {
+      this.setState({ loaded: false });
+      var directionsService = new google.maps.DirectionsService();
+      var markers = this.props.markers;
+      var size = markers.length * (markers.length - 1);
+      for (var i = 0; i < markers.length; i++) {
+        for (var j = 0; j < markers.length; j++) {
+          if (i === j) continue;
+          this.routeLocation(directionsService, markers[j], markers[i], size);
+        }
+      }
+    }
+  }, {
+    key: 'routeLocation',
+    value: function routeLocation(directionsService, origin, destination, size) {
+      var routeLocation = this.routeLocation;
+      var assessAllTrips = this.assessAllTrips;
+      var allRoutes = this.allRoutes;
+      directionsService.route({
+        origin: { lat: origin.lat, lng: origin.lng },
+        destination: { lat: destination.lat, lng: destination.lng },
+        travelMode: 'TRANSIT'
+      }, function (response, status) {
+        if (status === "OK") {
+          var route = response.routes[0].legs[0];
+          allRoutes.push({ displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps });
+          if (allRoutes.length === size) assessAllTrips(allRoutes);
+        } else if (status === "OVER_QUERY_LIMIT") {
+          setTimeout(function () {
+            routeLocation(directionsService, origin, destination, size);
+          }, 200);
+        }
+      });
+    }
+  }, {
+    key: 'assessAllTrips',
+    value: function assessAllTrips(allRoutes) {
+      var tripSummaries = [];
+      allRoutes.forEach(function (route) {
+        var notIncluded = true;
+        tripSummaries.forEach(function (trip) {
+          if (trip.destination === route.destination) {
+            notIncluded = false;
+            trip.trips.push(route);
+          }
+        });
+        if (notIncluded) {
+          tripSummaries.push({ destination: route.destination, destinationID: route.destinationID, trips: [route] });
+        }
+      });
+
+      tripSummaries.forEach(function (tripCollection) {
+        var trips = tripCollection.trips;
+        var totalTime = 0;
+        trips.forEach(function (trip) {
+          totalTime += trip.timeValue;
+        });
+        tripCollection.totalTime = totalTime;
+      });
+
+      tripSummaries.sort(function (a, b) {
+        return a.totalTime - b.totalTime;
+      });
+
+      this.setState({ tripSummaries: tripSummaries, loaded: true });
+    }
+  }, {
+    key: 'renderTripSummary',
+    value: function renderTripSummary(idx) {
+      var tripSummary = document.getElementById('trip-summary-' + idx);
+      tripSummary.classList.remove("hidden");
+    }
+  }, {
+    key: 'removeTripSummary',
+    value: function removeTripSummary(idx) {
+      var tripSummary = document.getElementById('trip-summary-' + idx);
+      tripSummary.classList.add("hidden");
+    }
+  }, {
+    key: 'selectDirections',
+    value: function selectDirections(trip) {
+      this.setState({ selectedDirections: trip });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
+      var totalTimesLIs = this.state.tripSummaries.map(function (tripSummary, idx) {
+        return _react2.default.createElement(
+          'li',
+          { onMouseOver: function onMouseOver() {
+              _this2.renderTripSummary(idx);
+            }, onMouseOut: function onMouseOut() {
+              _this2.removeTripSummary(idx);
+            }, className: 'most-convenient-location', key: idx },
+          _react2.default.createElement(
+            'h3',
+            { className: 'most-convenient-location-header' },
+            tripSummary.destination
+          ),
+          _react2.default.createElement(_progress_bar2.default, { totalTime: tripSummary.totalTime, longestTime: longestTrip.totalTime }),
+          _react2.default.createElement(_trip_summary2.default, { id: 'trip-summary-' + idx, summary: tripSummary, displayedDirections: _this2.props.displayedDirections, map: _this2.props.map, selectedDirections: _this2.props.selectedDirections })
+        );
+      });
+      var body = this.state.loaded ? _react2.default.createElement(
+        'ul',
+        null,
+        totalTimesLIs
+      ) : _react2.default.createElement(_loader2.default, null);
+      var tripDirections = this.state.selectedDirections ? _react2.default.createElement(_trip_directions2.default, { directions: this.state.selectedDirections.steps, origin: this.state.selectedDirections.origin, destination: this.state.selectedDirections.destination }) : null;
+
+      return _react2.default.createElement(
+        'div',
+        { id: 'most-convenient-div' },
+        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.getMostConvenient }),
+        _react2.default.createElement(
+          'div',
+          { id: 'most-convenient-directions' },
+          totalTimesLIs.length > 0 ? _react2.default.createElement(
+            'h1',
+            { className: 'most-convenient-locations-header' },
+            'Relative Total Times'
+          ) : null,
+          body
+        ),
+        tripDirections
+      );
+    }
+  }]);
+
+  return MostConvenient;
+}(_react2.default.Component);
+
+exports.default = MostConvenient;
+
+/***/ }),
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -19066,8 +19280,265 @@ var Loader = function (_React$Component) {
 exports.default = Loader;
 
 /***/ }),
-/* 38 */,
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ProgressBar = function (_React$Component) {
+  _inherits(ProgressBar, _React$Component);
+
+  function ProgressBar(props) {
+    _classCallCheck(this, ProgressBar);
+
+    return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
+  }
+
+  _createClass(ProgressBar, [{
+    key: "render",
+    value: function render() {
+      var width = this.props.totalTime / this.props.longestTime * 100;
+      return _react2.default.createElement(
+        "div",
+        { className: "progress-bar" },
+        _react2.default.createElement("div", { className: "progress-bar-filled", style: { width: width + "%" } })
+      );
+    }
+  }]);
+
+  return ProgressBar;
+}(_react2.default.Component);
+
+exports.default = ProgressBar;
+
+/***/ }),
 /* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _time_conversion = __webpack_require__(14);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TripSummary = function (_React$Component) {
+  _inherits(TripSummary, _React$Component);
+
+  function TripSummary(props) {
+    _classCallCheck(this, TripSummary);
+
+    var _this = _possibleConstructorReturn(this, (TripSummary.__proto__ || Object.getPrototypeOf(TripSummary)).call(this, props));
+
+    _this.displayDirections = _this.displayDirections.bind(_this);
+    return _this;
+  }
+
+  _createClass(TripSummary, [{
+    key: 'displayDirections',
+    value: function displayDirections(trip) {
+      var directionsDisplay = new google.maps.DirectionsRenderer();
+      if (this.props.displayedDirections.length > 0) this.props.displayedDirections[0].setMap(null);
+      this.props.displayedDirections.unshift(directionsDisplay);
+      directionsDisplay.setMap(this.props.map);
+      directionsDisplay.setDirections(trip.displayInfo);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var originLIs = this.props.summary.trips.map(function (trip, idx) {
+        var _React$createElement;
+
+        return _react2.default.createElement(
+          'li',
+          (_React$createElement = { onClick: function onClick() {
+              _this2.props.selectDirections(trip);
+            } }, _defineProperty(_React$createElement, 'onClick', function onClick() {
+            return _this2.displayDirections(trip);
+          }), _defineProperty(_React$createElement, 'key', idx), _defineProperty(_React$createElement, 'className', 'trip-summary-origin'), _React$createElement),
+          _react2.default.createElement(
+            'h3',
+            { className: 'trip-summary-origin-header' },
+            trip.origin
+          ),
+          _react2.default.createElement(
+            'h4',
+            { className: 'trip-summary-origin-time' },
+            (0, _time_conversion.timeConversion)(trip.timeValue)
+          )
+        );
+      });
+
+      return _react2.default.createElement(
+        'div',
+        { id: this.props.id, className: 'trip-summary hidden' },
+        _react2.default.createElement(
+          'h1',
+          { style: { fontSize: "18px", marginTop: "6px", marginBottom: "3px" } },
+          (0, _time_conversion.timeConversion)(this.props.summary.totalTime),
+          ' in transit'
+        ),
+        _react2.default.createElement(
+          'h1',
+          { style: { fontSize: "16px", marginBottom: "6px", marginTop: "3px" } },
+          'Click to get directions from...'
+        ),
+        _react2.default.createElement(
+          'ul',
+          null,
+          originLIs
+        )
+      );
+    }
+  }]);
+
+  return TripSummary;
+}(_react2.default.Component);
+
+exports.default = TripSummary;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TripDirections = function (_React$Component) {
+  _inherits(TripDirections, _React$Component);
+
+  function TripDirections(props) {
+    _classCallCheck(this, TripDirections);
+
+    var _this = _possibleConstructorReturn(this, (TripDirections.__proto__ || Object.getPrototypeOf(TripDirections)).call(this, props));
+
+    _this.parseInstructions = _this.parseInstructions.bind(_this);
+    return _this;
+  }
+
+  _createClass(TripDirections, [{
+    key: "parseInstructions",
+    value: function parseInstructions(step, idx) {
+      switch (step.travel_mode) {
+        case "TRANSIT":
+          return _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(
+              "li",
+              { className: "trip-directions-step", key: idx },
+              step.instructions + " for " + step.transit.num_stops + " stops on the " + step.transit.line.short_name
+            ),
+            _react2.default.createElement(
+              "li",
+              { className: "trip-directions-step", key: idx + "b" },
+              "Get off at " + step.transit.arrival_stop.name
+            )
+          );
+        default:
+          return _react2.default.createElement(
+            "li",
+            { className: "trip-directions-step", key: idx },
+            step.instructions
+          );
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var directionLIs = this.props.directions.map(function (step, idx) {
+        return _this2.parseInstructions(step, idx);
+      });
+      return _react2.default.createElement(
+        "div",
+        { className: "trip-directions" },
+        _react2.default.createElement(
+          "p",
+          { className: "trip-directions-step-primary" },
+          "Leave from ",
+          this.props.origin
+        ),
+        _react2.default.createElement(
+          "ul",
+          null,
+          directionLIs
+        ),
+        _react2.default.createElement(
+          "p",
+          { className: "trip-directions-step-primary" },
+          "Arrive at ",
+          this.props.destination
+        )
+      );
+    }
+  }]);
+
+  return TripDirections;
+}(_react2.default.Component);
+
+exports.default = TripDirections;
+
+/***/ }),
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19190,459 +19661,6 @@ var Midpoint = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Midpoint;
-
-/***/ }),
-/* 40 */,
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _time_conversion = __webpack_require__(14);
-
-var _loader = __webpack_require__(37);
-
-var _loader2 = _interopRequireDefault(_loader);
-
-var _progress_bar = __webpack_require__(42);
-
-var _progress_bar2 = _interopRequireDefault(_progress_bar);
-
-var _trip_summary = __webpack_require__(43);
-
-var _trip_summary2 = _interopRequireDefault(_trip_summary);
-
-var _trip_directions = __webpack_require__(44);
-
-var _trip_directions2 = _interopRequireDefault(_trip_directions);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MostConvenient = function (_React$Component) {
-  _inherits(MostConvenient, _React$Component);
-
-  function MostConvenient(props) {
-    _classCallCheck(this, MostConvenient);
-
-    var _this = _possibleConstructorReturn(this, (MostConvenient.__proto__ || Object.getPrototypeOf(MostConvenient)).call(this, props));
-
-    _this.state = {
-      tripSummaries: [],
-      loaded: true,
-      selectedDirections: null
-    };
-
-    _this.getMostConvenient = _this.getMostConvenient.bind(_this);
-    _this.assessAllTrips = _this.assessAllTrips.bind(_this);
-    _this.routeLocation = _this.routeLocation.bind(_this);
-    _this.displayDirections = _this.displayDirections.bind(_this);
-    _this.renderTripSummary = _this.renderTripSummary.bind(_this);
-    _this.removeTripSummary = _this.removeTripSummary.bind(_this);
-    _this.selectDirections = _this.selectDirections.bind(_this);
-
-    _this.allRoutes = [];
-    return _this;
-  }
-
-  _createClass(MostConvenient, [{
-    key: 'getMostConvenient',
-    value: function getMostConvenient() {
-      this.setState({ loaded: false });
-      var directionsService = new google.maps.DirectionsService();
-      var markers = this.props.markers;
-      var size = markers.length * (markers.length - 1);
-      for (var i = 0; i < markers.length; i++) {
-        for (var j = 0; j < markers.length; j++) {
-          if (i === j) continue;
-          this.routeLocation(directionsService, markers[j], markers[i], size);
-        }
-      }
-    }
-  }, {
-    key: 'routeLocation',
-    value: function routeLocation(directionsService, origin, destination, size) {
-      var routeLocation = this.routeLocation;
-      var assessAllTrips = this.assessAllTrips;
-      var allRoutes = this.allRoutes;
-      directionsService.route({
-        origin: { lat: origin.lat, lng: origin.lng },
-        destination: { lat: destination.lat, lng: destination.lng },
-        travelMode: 'TRANSIT'
-      }, function (response, status) {
-        if (status === "OK") {
-          var route = response.routes[0].legs[0];
-          allRoutes.push({ displayInfo: response, origin: origin.title, destination: destination.title, destinationID: destination.marker.metadata.id, timeValue: route.duration.value, steps: route.steps });
-          if (allRoutes.length === size) assessAllTrips(allRoutes);
-        } else if (status === "OVER_QUERY_LIMIT") {
-          setTimeout(function () {
-            routeLocation(directionsService, origin, destination, size);
-          }, 200);
-        }
-      });
-    }
-  }, {
-    key: 'assessAllTrips',
-    value: function assessAllTrips(allRoutes) {
-      var tripSummaries = [];
-      allRoutes.forEach(function (route) {
-        var notIncluded = true;
-        tripSummaries.forEach(function (trip) {
-          if (trip.destination === route.destination) {
-            notIncluded = false;
-            trip.trips.push(route);
-          }
-        });
-        if (notIncluded) {
-          tripSummaries.push({ destination: route.destination, destinationID: route.destinationID, trips: [route] });
-        }
-      });
-
-      tripSummaries.forEach(function (tripCollection) {
-        var trips = tripCollection.trips;
-        var totalTime = 0;
-        trips.forEach(function (trip) {
-          totalTime += trip.timeValue;
-        });
-        tripCollection.totalTime = totalTime;
-      });
-
-      tripSummaries.sort(function (a, b) {
-        return a.totalTime - b.totalTime;
-      });
-
-      this.setState({ tripSummaries: tripSummaries, loaded: true });
-    }
-  }, {
-    key: 'displayDirections',
-    value: function displayDirections(totalTime) {
-      var directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(this.props.map);
-      this.state.tripSummaries.forEach(function (summary) {
-        if (summary.destinationID === totalTime.destinationID) {
-          var trip = summary.trips[0];
-          directionsDisplay.setDirections(trip.displayInfo);
-        }
-      });
-    }
-  }, {
-    key: 'renderTripSummary',
-    value: function renderTripSummary(idx) {
-      var tripSummary = document.getElementById('trip-summary-' + idx);
-      tripSummary.classList.remove("hidden");
-    }
-  }, {
-    key: 'removeTripSummary',
-    value: function removeTripSummary(idx) {
-      var tripSummary = document.getElementById('trip-summary-' + idx);
-      tripSummary.classList.add("hidden");
-    }
-  }, {
-    key: 'selectDirections',
-    value: function selectDirections(trip) {
-      this.setState({ selectedDirections: trip });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      var longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
-      var totalTimesLIs = this.state.tripSummaries.map(function (tripSummary, idx) {
-        return _react2.default.createElement(
-          'li',
-          { onClick: function onClick() {
-              return _this2.displayDirections(tripSummary);
-            }, onMouseOver: function onMouseOver() {
-              _this2.renderTripSummary(idx);
-            }, onMouseOut: function onMouseOut() {
-              _this2.removeTripSummary(idx);
-            }, className: 'most-convenient-location', key: idx },
-          _react2.default.createElement(
-            'h3',
-            { className: 'most-convenient-location-header' },
-            tripSummary.destination
-          ),
-          _react2.default.createElement(_progress_bar2.default, { totalTime: tripSummary.totalTime, longestTime: longestTrip.totalTime }),
-          _react2.default.createElement(_trip_summary2.default, { id: 'trip-summary-' + idx, summary: tripSummary, selectDirections: _this2.selectDirections })
-        );
-      });
-      var body = this.state.loaded ? _react2.default.createElement(
-        'ul',
-        null,
-        totalTimesLIs
-      ) : _react2.default.createElement(_loader2.default, null);
-      var tripDirections = this.state.selectedDirections ? _react2.default.createElement(_trip_directions2.default, { directions: this.state.selectedDirections.steps, origin: this.state.selectedDirections.origin, destination: this.state.selectedDirections.destination }) : null;
-
-      return _react2.default.createElement(
-        'div',
-        { id: 'most-convenient-div' },
-        _react2.default.createElement('input', { className: 'button', id: 'submit', type: 'button', value: 'Find', onClick: this.getMostConvenient }),
-        _react2.default.createElement(
-          'div',
-          { id: 'most-convenient-directions' },
-          body
-        ),
-        tripDirections
-      );
-    }
-  }]);
-
-  return MostConvenient;
-}(_react2.default.Component);
-
-exports.default = MostConvenient;
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ProgressBar = function (_React$Component) {
-  _inherits(ProgressBar, _React$Component);
-
-  function ProgressBar(props) {
-    _classCallCheck(this, ProgressBar);
-
-    return _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
-  }
-
-  _createClass(ProgressBar, [{
-    key: "render",
-    value: function render() {
-      var width = this.props.totalTime / this.props.longestTime * 100;
-      return _react2.default.createElement(
-        "div",
-        { className: "progress-bar" },
-        _react2.default.createElement("div", { className: "progress-bar-filled", style: { width: width + "%" } })
-      );
-    }
-  }]);
-
-  return ProgressBar;
-}(_react2.default.Component);
-
-exports.default = ProgressBar;
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _time_conversion = __webpack_require__(14);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TripSummary = function (_React$Component) {
-  _inherits(TripSummary, _React$Component);
-
-  function TripSummary(props) {
-    _classCallCheck(this, TripSummary);
-
-    return _possibleConstructorReturn(this, (TripSummary.__proto__ || Object.getPrototypeOf(TripSummary)).call(this, props));
-  }
-
-  _createClass(TripSummary, [{
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      var originLIs = this.props.summary.trips.map(function (trip, idx) {
-        return _react2.default.createElement(
-          'li',
-          { onClick: function onClick() {
-              _this2.props.selectDirections(trip);
-            }, key: idx, className: 'trip-summary-origin' },
-          _react2.default.createElement(
-            'h3',
-            { className: 'trip-summary-origin-header' },
-            trip.origin
-          ),
-          _react2.default.createElement(
-            'h4',
-            { className: 'trip-summary-origin-time' },
-            (0, _time_conversion.timeConversion)(trip.timeValue)
-          )
-        );
-      });
-
-      return _react2.default.createElement(
-        'div',
-        { id: this.props.id, className: 'trip-summary hidden' },
-        _react2.default.createElement(
-          'h1',
-          { style: { textSize: "14px", margin: "6px" } },
-          'Click to get directions from...'
-        ),
-        _react2.default.createElement(
-          'ul',
-          null,
-          originLIs
-        )
-      );
-    }
-  }]);
-
-  return TripSummary;
-}(_react2.default.Component);
-
-exports.default = TripSummary;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TripDirections = function (_React$Component) {
-  _inherits(TripDirections, _React$Component);
-
-  function TripDirections(props) {
-    _classCallCheck(this, TripDirections);
-
-    var _this = _possibleConstructorReturn(this, (TripDirections.__proto__ || Object.getPrototypeOf(TripDirections)).call(this, props));
-
-    _this.parseInstructions = _this.parseInstructions.bind(_this);
-    return _this;
-  }
-
-  _createClass(TripDirections, [{
-    key: "parseInstructions",
-    value: function parseInstructions(step, idx) {
-      switch (step.travel_mode) {
-        case "TRANSIT":
-          return _react2.default.createElement(
-            "div",
-            null,
-            _react2.default.createElement(
-              "li",
-              { className: "trip-directions-step", key: idx },
-              step.instructions + " for " + step.transit.num_stops + " stops on the " + step.transit.line.short_name
-            ),
-            _react2.default.createElement(
-              "li",
-              { className: "trip-directions-step", key: idx + "b" },
-              "Get off at " + step.transit.arrival_stop.name
-            )
-          );
-        default:
-          return _react2.default.createElement(
-            "li",
-            { className: "trip-directions-step", key: idx },
-            step.instructions
-          );
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      console.log(this.props.directions);
-      var directionLIs = this.props.directions.map(function (step, idx) {
-        return _this2.parseInstructions(step, idx);
-      });
-      return _react2.default.createElement(
-        "div",
-        { className: "trip-directions" },
-        _react2.default.createElement(
-          "p",
-          { className: "trip-directions-step-primary" },
-          "Leave from ",
-          this.props.origin
-        ),
-        _react2.default.createElement(
-          "ul",
-          null,
-          directionLIs
-        ),
-        _react2.default.createElement(
-          "p",
-          { className: "trip-directions-step-primary" },
-          "Arrive at ",
-          this.props.destination
-        )
-      );
-    }
-  }]);
-
-  return TripDirections;
-}(_react2.default.Component);
-
-exports.default = TripDirections;
 
 /***/ })
 /******/ ]);

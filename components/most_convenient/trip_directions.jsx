@@ -20,7 +20,6 @@ class TripDirections extends React.Component {
   }
 
   render() {
-    console.log(this.props.directions);
     const directionLIs = this.props.directions.map( (step, idx) => {
       return this.parseInstructions(step, idx)
     })

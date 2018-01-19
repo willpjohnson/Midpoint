@@ -20,7 +20,6 @@ class MostConvenient extends React.Component {
     this.getMostConvenient = this.getMostConvenient.bind(this);
     this.assessAllTrips = this.assessAllTrips.bind(this);
     this.routeLocation = this.routeLocation.bind(this);
-    this.displayDirections = this.displayDirections.bind(this);
     this.renderTripSummary = this.renderTripSummary.bind(this);
     this.removeTripSummary = this.removeTripSummary.bind(this);
     this.selectDirections = this.selectDirections.bind(this);
@@ -93,17 +92,6 @@ class MostConvenient extends React.Component {
     this.setState({tripSummaries, loaded: true});
   }
 
-  displayDirections(totalTime) {
-    const directionsDisplay = new google.maps.DirectionsRenderer;
-    directionsDisplay.setMap(this.props.map);
-    this.state.tripSummaries.forEach( (summary) => {
-      if (summary.destinationID === totalTime.destinationID) {
-        let trip = summary.trips[0];
-        directionsDisplay.setDirections(trip.displayInfo);
-      }
-    })
-  }
-
   renderTripSummary(idx) {
     const tripSummary = document.getElementById(`trip-summary-${idx}`);
     tripSummary.classList.remove("hidden");
@@ -122,10 +110,10 @@ class MostConvenient extends React.Component {
     const longestTrip = this.state.tripSummaries[this.state.tripSummaries.length - 1];
     const totalTimesLIs = this.state.tripSummaries.map( (tripSummary, idx) => {
       return(
-        <li onClick={() => this.displayDirections(tripSummary)} onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
+        <li onMouseOver={() => {this.renderTripSummary(idx)}} onMouseOut={() => {this.removeTripSummary(idx)}} className="most-convenient-location" key={idx}>
           <h3 className="most-convenient-location-header">{tripSummary.destination}</h3>
           <ProgressBar totalTime={tripSummary.totalTime} longestTime={longestTrip.totalTime}/>
-          <TripSummary id={`trip-summary-${idx}`} summary={tripSummary} selectDirections={this.selectDirections}/>
+          <TripSummary id={`trip-summary-${idx}`} summary={tripSummary} displayedDirections={this.props.displayedDirections} map={this.props.map} selectedDirections={this.props.selectedDirections}/>
         </li>
       )
     })
@@ -136,6 +124,7 @@ class MostConvenient extends React.Component {
       <div id="most-convenient-div">
         <input className="button" id="submit" type="button" value="Find" onClick={this.getMostConvenient}></input>
         <div id="most-convenient-directions">
+          {totalTimesLIs.length > 0 ? <h1 className="most-convenient-locations-header">Relative Total Times</h1> : null}
           {body}
         </div>
         {tripDirections}

@@ -10,6 +10,7 @@ class Root extends React.Component {
     this.map = null;
     this.markers = [];
     this.deletedMarkers = [];
+    this.displayedDirections = [];
   }
 
   componentDidMount() {
@@ -20,8 +21,8 @@ class Root extends React.Component {
   render() {
     return(
       <div>
-        <Leftbar map={this.map} markers={this.markers} deletedMarkers={this.deletedMarkers} />
-        <Rightbar map={this.map} markers={this.markers} deletedMarkers={this.deletedMarkers}/>
+        <Leftbar map={this.map} markers={this.markers} deletedMarkers={this.deletedMarkers} displayedDirections={this.displayedDirections}/>
+        <Rightbar map={this.map} markers={this.markers} deletedMarkers={this.deletedMarkers} displayedDirections={this.displayedDirections}/>
         <div id="map"></div>
       </div>
     )
