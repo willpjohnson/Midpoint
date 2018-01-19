@@ -18516,12 +18516,13 @@ var Leftbar = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Leftbar.__proto__ || Object.getPrototypeOf(Leftbar)).call(this, props));
 
     _this.recenterMap = _this.recenterMap.bind(_this);
+    _this.clearMap = _this.clearMap.bind(_this);
     return _this;
   }
 
   _createClass(Leftbar, [{
     key: 'recenterMap',
-    value: function recenterMap(map) {
+    value: function recenterMap() {
       if (this.props.markers.length < 1) return;
       var lats = [];
       var lngs = [];
@@ -18536,13 +18537,29 @@ var Leftbar = function (_React$Component) {
       if (this.props.map.zoom > 15) this.props.map.setZoom(15);
     }
   }, {
+    key: 'clearMap',
+    value: function clearMap() {
+      // Clear Directions
+      if (this.props.displayedDirections[0]) this.props.displayedDirections[0].setMap(null);
+      this.props.displayedDirections.length = 0;
+      // Clear Markers
+      this.props.markers.forEach(function (marker) {
+        marker.marker.setMap(null);
+      });
+      this.props.markers.length = 0;
+      // Clear DeletedMarkers
+      this.props.deletedMarkers.length = 0;
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         { id: 'leftbar' },
         _react2.default.createElement(_add_location2.default, { map: this.props.map, markers: this.props.markers, deletedMarkers: this.props.deletedMarkers }),
-        _react2.default.createElement('input', { className: 'button', type: 'button', value: 'Recenter Map', onClick: this.recenterMap })
+        _react2.default.createElement('input', { className: 'button', type: 'button', value: 'Recenter Map', onClick: this.recenterMap }),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('input', { className: 'button', type: 'button', value: 'Clear Map', onClick: this.clearMap })
       );
     }
   }]);
@@ -18917,7 +18934,8 @@ var BestSubway = function (_React$Component) {
       directionsService.route({
         origin: { lat: origin.lat, lng: origin.lng },
         destination: { lat: destination.lat, lng: destination.lng },
-        travelMode: 'TRANSIT'
+        travelMode: 'TRANSIT',
+        avoidFerries: true
       }, function (response, status) {
         if (status === "OK") {
           // let route = response.routes[0].legs[0];
@@ -19052,7 +19070,8 @@ var MostConvenient = function (_React$Component) {
       directionsService.route({
         origin: { lat: origin.lat, lng: origin.lng },
         destination: { lat: destination.lat, lng: destination.lng },
-        travelMode: 'TRANSIT'
+        travelMode: 'TRANSIT',
+        avoidFerries: true
       }, function (response, status) {
         if (status === "OK") {
           var route = response.routes[0].legs[0];
@@ -19374,10 +19393,9 @@ var TripSummary = function (_React$Component) {
   _createClass(TripSummary, [{
     key: 'displayDirections',
     value: function displayDirections(trip) {
-      var directionsDisplay = new google.maps.DirectionsRenderer();
+      var directionsDisplay = new google.maps.DirectionsRenderer({ map: this.props.map });
       if (this.props.displayedDirections.length > 0) this.props.displayedDirections[0].setMap(null);
       this.props.displayedDirections.unshift(directionsDisplay);
-      directionsDisplay.setMap(this.props.map);
       directionsDisplay.setDirections(trip.displayInfo);
     }
   }, {

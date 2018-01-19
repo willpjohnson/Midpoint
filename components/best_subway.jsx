@@ -28,7 +28,8 @@ class BestSubway extends React.Component {
     directionsService.route({
       origin: {lat: origin.lat, lng: origin.lng},
       destination: {lat: destination.lat, lng: destination.lng},
-      travelMode: 'TRANSIT'
+      travelMode: 'TRANSIT',
+      avoidFerries: true
     }, function(response, status) {
       if (status === "OK") {
         // let route = response.routes[0].legs[0];

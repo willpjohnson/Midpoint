@@ -10,10 +10,9 @@ class TripSummary extends React.Component {
   }
 
   displayDirections(trip) {
-    const directionsDisplay = new google.maps.DirectionsRenderer;
+    const directionsDisplay = new google.maps.DirectionsRenderer({map: this.props.map});
     if (this.props.displayedDirections.length > 0) this.props.displayedDirections[0].setMap(null);
     this.props.displayedDirections.unshift(directionsDisplay);
-    directionsDisplay.setMap(this.props.map);
     directionsDisplay.setDirections(trip.displayInfo);
   }
 
